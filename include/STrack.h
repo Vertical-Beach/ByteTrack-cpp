@@ -6,6 +6,8 @@
 using namespace cv;
 using namespace std;
 
+namespace byte_track
+{
 enum TrackState { New = 0, Tracked, Lost, Removed };
 
 class STrack
@@ -48,3 +50,4 @@ public:
 private:
     byte_kalman::KalmanFilter kalman_filter;
 };
+}

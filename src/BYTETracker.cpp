@@ -1,6 +1,8 @@
 #include "BYTETracker.h"
 #include <fstream>
 
+namespace byte_track
+{
 BYTETracker::BYTETracker(int frame_rate, int track_buffer)
 {
     track_thresh = 0.5;
@@ -238,4 +240,5 @@ vector<STrack> BYTETracker::update(const vector<Object>& objects)
         }
     }
     return output_stracks;
+}
 }

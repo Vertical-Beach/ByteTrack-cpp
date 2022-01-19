@@ -2,6 +2,8 @@
 
 #include "STrack.h"
 
+namespace byte_track
+{
 struct Object
 {
     cv::Rect_<float> rect;
@@ -35,7 +37,6 @@ private:
         bool extend_cost = false, float cost_limit = LONG_MAX, bool return_cost = true);
 
 private:
-
     float track_thresh;
     float high_thresh;
     float match_thresh;
@@ -47,3 +48,4 @@ private:
     vector<STrack> removed_stracks;
     byte_kalman::KalmanFilter kalman_filter;
 };
+}
