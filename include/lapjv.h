@@ -1,6 +1,10 @@
 #ifndef LAPJV_H
 #define LAPJV_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define LARGE 1000000
 
 #if !defined TRUE

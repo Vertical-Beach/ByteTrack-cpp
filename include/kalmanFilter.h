@@ -1,6 +1,8 @@
 #pragma once
 
-#include "dataType.h"
+#include <Eigen/Cholesky>
+
+#include <dataType.h>
 
 namespace byte_track
 {

@@ -1,8 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "lapjv.h"
+#include <lapjv.h>
 
 namespace byte_track
 {

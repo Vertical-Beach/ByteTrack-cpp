@@ -1,5 +1,4 @@
-#include "BYTETracker.h"
-#include <fstream>
+#include <BYTETracker.h>
 
 namespace byte_track
 {
