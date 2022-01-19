@@ -11,40 +11,40 @@ BYTETracker::BYTETracker(int frame_rate, int track_buffer)
 
     frame_id = 0;
     max_time_lost = int(frame_rate / 30.0 * track_buffer);
-    cout << "Init ByteTrack!" << endl;
+    std::cout << "Init ByteTrack!" << std::endl;
 }
 
 BYTETracker::~BYTETracker()
 {
 }
 
-vector<STrack> BYTETracker::update(const vector<Object>& objects)
+std::vector<STrack> BYTETracker::update(const std::vector<Object>& objects)
 {
 
     ////////////////// Step 1: Get detections //////////////////
     this->frame_id++;
-    vector<STrack> activated_stracks;
-    vector<STrack> refind_stracks;
-    vector<STrack> removed_stracks;
-    vector<STrack> lost_stracks;
-    vector<STrack> detections;
-    vector<STrack> detections_low;
+    std::vector<STrack> activated_stracks;
+    std::vector<STrack> refind_stracks;
+    std::vector<STrack> removed_stracks;
+    std::vector<STrack> lost_stracks;
+    std::vector<STrack> detections;
+    std::vector<STrack> detections_low;
 
-    vector<STrack> detections_cp;
-    vector<STrack> tracked_stracks_swap;
-    vector<STrack> resa, resb;
-    vector<STrack> output_stracks;
+    std::vector<STrack> detections_cp;
+    std::vector<STrack> tracked_stracks_swap;
+    std::vector<STrack> resa, resb;
+    std::vector<STrack> output_stracks;
 
-    vector<STrack*> unconfirmed;
-    vector<STrack*> tracked_stracks;
-    vector<STrack*> strack_pool;
-    vector<STrack*> r_tracked_stracks;
+    std::vector<STrack*> unconfirmed;
+    std::vector<STrack*> tracked_stracks;
+    std::vector<STrack*> strack_pool;
+    std::vector<STrack*> r_tracked_stracks;
 
     if (objects.size() > 0)
     {
         for (int i = 0; i < objects.size(); i++)
         {
-            vector<float> tlbr_;
+            std::vector<float> tlbr_;
             tlbr_.resize(4);
             tlbr_[0] = objects[i].rect.x;
             tlbr_[1] = objects[i].rect.y;
@@ -79,12 +79,12 @@ vector<STrack> BYTETracker::update(const vector<Object>& objects)
     strack_pool = joint_stracks(tracked_stracks, this->lost_stracks);
     STrack::multi_predict(strack_pool, this->kalman_filter);
 
-    vector<vector<float> > dists;
+    std::vector<std::vector<float> > dists;
     int dist_size = 0, dist_size_size = 0;
     dists = iou_distance(strack_pool, detections, dist_size, dist_size_size);
 
-    vector<vector<int> > matches;
-    vector<int> u_track, u_detection;
+    std::vector<std::vector<int> > matches;
+    std::vector<int> u_track, u_detection;
     linear_assignment(dists, dist_size, dist_size_size, match_thresh, matches, u_track, u_detection);
 
     for (int i = 0; i < matches.size(); i++)
@@ -161,7 +161,7 @@ vector<STrack> BYTETracker::update(const vector<Object>& objects)
     dists = iou_distance(unconfirmed, detections, dist_size, dist_size_size);
 
     matches.clear();
-    vector<int> u_unconfirmed;
+    std::vector<int> u_unconfirmed;
     u_detection.clear();
     linear_assignment(dists, dist_size, dist_size_size, 0.7, matches, u_unconfirmed, u_detection);
 
