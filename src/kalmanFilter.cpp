@@ -36,10 +36,10 @@ namespace byte_kalman
     {
         DETECTBOX mean_pos = measurement;
         DETECTBOX mean_vel;
-        for (int i = 0; i < 4; i++) mean_vel(i) = 0;
+        for (size_t i = 0; i < 4; i++) mean_vel(i) = 0;
 
         KAL_MEAN mean;
-        for (int i = 0; i < 8; i++) {
+        for (size_t i = 0; i < 8; i++) {
             if (i < 4) mean(i) = mean_pos(i);
             else mean(i) = mean_vel(i - 4);
         }

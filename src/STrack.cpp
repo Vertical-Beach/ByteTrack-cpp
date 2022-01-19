@@ -183,7 +183,7 @@ int STrack::end_frame()
 
 void STrack::multi_predict(std::vector<STrack*> &stracks, byte_kalman::KalmanFilter &kalman_filter)
 {
-    for (int i = 0; i < stracks.size(); i++)
+    for (size_t i = 0; i < stracks.size(); i++)
     {
         if (stracks[i]->state != TrackState::Tracked)
         {
