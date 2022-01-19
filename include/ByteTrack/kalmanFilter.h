@@ -2,7 +2,7 @@
 
 #include <Eigen/Cholesky>
 
-#include <dataType.h>
+#include <ByteTrack/dataType.h>
 
 namespace byte_track
 {

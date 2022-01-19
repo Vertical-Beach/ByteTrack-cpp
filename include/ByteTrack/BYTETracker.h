@@ -2,8 +2,8 @@
 
 #include <fstream>
 
-#include <STrack.h>
-#include <lapjv.h>
+#include <ByteTrack/STrack.h>
+#include <ByteTrack/lapjv.h>
 
 namespace byte_track
 {
