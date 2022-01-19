@@ -1,23 +1,21 @@
 #include <ByteTrack/lapjv.h>
 
-namespace byte_track
-{
 /** Column-reduction and reduction transfer for a dense cost matrix.
  */
-int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
-    int_t *free_rows, int_t *x, int_t *y, cost_t *v)
+byte_track::int_t _ccrrt_dense(const byte_track::uint_t n, byte_track::cost_t *cost[],
+    byte_track::int_t *free_rows, byte_track::int_t *x, byte_track::int_t *y, byte_track::cost_t *v)
 {
-    int_t n_free_rows;
-    boolean *unique;
+    byte_track::int_t n_free_rows;
+    byte_track::boolean *unique;
 
-    for (uint_t i = 0; i < n; i++) {
+    for (byte_track::uint_t i = 0; i < n; i++) {
         x[i] = -1;
         v[i] = LARGE;
         y[i] = 0;
     }
-    for (uint_t i = 0; i < n; i++) {
-        for (uint_t j = 0; j < n; j++) {
-            const cost_t c = cost[i][j];
+    for (byte_track::uint_t i = 0; i < n; i++) {
+        for (byte_track::uint_t j = 0; j < n; j++) {
+            const byte_track::cost_t c = cost[i][j];
             if (c < v[j]) {
                 v[j] = c;
                 y[j] = i;
@@ -27,13 +25,13 @@ int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
     }
     PRINT_COST_ARRAY(v, n);
     PRINT_INDEX_ARRAY(y, n);
-    NEW(unique, boolean, n);
+    NEW(unique, byte_track::boolean, n);
     memset(unique, TRUE, n);
     {
-        int_t j = n;
+        byte_track::int_t j = n;
         do {
             j--;
-            const int_t i = y[j];
+            const byte_track::int_t i = y[j];
             if (x[i] < 0) {
                 x[i] = j;
             }
@@ -44,18 +42,18 @@ int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
         } while (j > 0);
     }
     n_free_rows = 0;
-    for (uint_t i = 0; i < n; i++) {
+    for (byte_track::uint_t i = 0; i < n; i++) {
         if (x[i] < 0) {
             free_rows[n_free_rows++] = i;
         }
         else if (unique[i]) {
-            const int_t j = x[i];
-            cost_t min = LARGE;
-            for (uint_t j2 = 0; j2 < n; j2++) {
-                if (j2 == (uint_t)j) {
+            const byte_track::int_t j = x[i];
+            byte_track::cost_t min = LARGE;
+            for (byte_track::uint_t j2 = 0; j2 < n; j2++) {
+                if (j2 == (byte_track::uint_t)j) {
                     continue;
                 }
-                const cost_t c = cost[i][j2] - v[j2];
+                const byte_track::cost_t c = cost[i][j2] - v[j2];
                 if (c < min) {
                     min = c;
                 }
@@ -71,34 +69,34 @@ int_t _ccrrt_dense(const uint_t n, cost_t *cost[],
 
 /** Augmenting row reduction for a dense cost matrix.
  */
-int_t _carr_dense(
-    const uint_t n, cost_t *cost[],
-    const uint_t n_free_rows,
-    int_t *free_rows, int_t *x, int_t *y, cost_t *v)
+byte_track::int_t _carr_dense(
+    const byte_track::uint_t n, byte_track::cost_t *cost[],
+    const byte_track::uint_t n_free_rows,
+    byte_track::int_t *free_rows, byte_track::int_t *x, byte_track::int_t *y, byte_track::cost_t *v)
 {
-    uint_t current = 0;
-    int_t new_free_rows = 0;
-    uint_t rr_cnt = 0;
+    byte_track::uint_t current = 0;
+    byte_track::int_t new_free_rows = 0;
+    byte_track::uint_t rr_cnt = 0;
     PRINT_INDEX_ARRAY(x, n);
     PRINT_INDEX_ARRAY(y, n);
     PRINT_COST_ARRAY(v, n);
     PRINT_INDEX_ARRAY(free_rows, n_free_rows);
     while (current < n_free_rows) {
-        int_t i0;
-        int_t j1, j2;
-        cost_t v1, v2, v1_new;
-        boolean v1_lowers;
+        byte_track::int_t i0;
+        byte_track::int_t j1, j2;
+        byte_track::cost_t v1, v2, v1_new;
+        byte_track::boolean v1_lowers;
 
         rr_cnt++;
         PRINTF("current = %d rr_cnt = %d\n", current, rr_cnt);
-        const int_t free_i = free_rows[current++];
+        const byte_track::int_t free_i = free_rows[current++];
         j1 = 0;
         v1 = cost[free_i][0] - v[0];
         j2 = -1;
         v2 = LARGE;
-        for (uint_t j = 1; j < n; j++) {
+        for (byte_track::uint_t j = 1; j < n; j++) {
             PRINTF("%d = %f %d = %f\n", j1, v1, j2, v2);
-            const cost_t c = cost[free_i][j] - v[j];
+            const byte_track::cost_t c = cost[free_i][j] - v[j];
             if (c < v2) {
                 if (c >= v1) {
                     v2 = c;
@@ -148,12 +146,12 @@ int_t _carr_dense(
 
 /** Find columns with minimum d[j] and put them on the SCAN list.
  */
-uint_t _find_dense(const uint_t n, uint_t lo, cost_t *d, int_t *cols, int_t *y)
+byte_track::uint_t _find_dense(const byte_track::uint_t n, byte_track::uint_t lo, byte_track::cost_t *d, byte_track::int_t *cols, byte_track::int_t *y)
 {
-    uint_t hi = lo + 1;
-    cost_t mind = d[cols[lo]];
-    for (uint_t k = hi; k < n; k++) {
-        int_t j = cols[k];
+    byte_track::uint_t hi = lo + 1;
+    byte_track::cost_t mind = d[cols[lo]];
+    for (byte_track::uint_t k = hi; k < n; k++) {
+        byte_track::int_t j = cols[k];
         if (d[j] <= mind) {
             if (d[j] < mind) {
                 hi = lo;
@@ -169,23 +167,23 @@ uint_t _find_dense(const uint_t n, uint_t lo, cost_t *d, int_t *cols, int_t *y)
 
 // Scan all columns in TODO starting from arbitrary column in SCAN
 // and try to decrease d of the TODO columns using the SCAN column.
-int_t _scan_dense(const uint_t n, cost_t *cost[],
-    uint_t *plo, uint_t*phi,
-    cost_t *d, int_t *cols, int_t *pred,
-    int_t *y, cost_t *v)
+byte_track::int_t _scan_dense(const byte_track::uint_t n, byte_track::cost_t *cost[],
+    byte_track::uint_t *plo, byte_track::uint_t*phi,
+    byte_track::cost_t *d, byte_track::int_t *cols, byte_track::int_t *pred,
+    byte_track::int_t *y, byte_track::cost_t *v)
 {
-    uint_t lo = *plo;
-    uint_t hi = *phi;
-    cost_t h, cred_ij;
+    byte_track::uint_t lo = *plo;
+    byte_track::uint_t hi = *phi;
+    byte_track::cost_t h, cred_ij;
 
     while (lo != hi) {
-        int_t j = cols[lo++];
-        const int_t i = y[j];
-        const cost_t mind = d[j];
+        byte_track::int_t j = cols[lo++];
+        const byte_track::int_t i = y[j];
+        const byte_track::cost_t mind = d[j];
         h = cost[i][j] - v[j] - mind;
         PRINTF("i=%d j=%d h=%f\n", i, j, h);
         // For all columns in TODO
-        for (uint_t k = hi; k < n; k++) {
+        for (byte_track::uint_t k = hi; k < n; k++) {
             j = cols[k];
             cred_ij = cost[i][j] - v[j] - h;
             if (cred_ij < d[j]) {
@@ -213,22 +211,22 @@ int_t _scan_dense(const uint_t n, cost_t *cost[],
  *
  * \return The closest free column index.
  */
-int_t find_path_dense(
-    const uint_t n, cost_t *cost[],
-    const int_t start_i,
-    int_t *y, cost_t *v,
-    int_t *pred)
+byte_track::int_t find_path_dense(
+    const byte_track::uint_t n, byte_track::cost_t *cost[],
+    const byte_track::int_t start_i,
+    byte_track::int_t *y, byte_track::cost_t *v,
+    byte_track::int_t *pred)
 {
-    uint_t lo = 0, hi = 0;
-    int_t final_j = -1;
-    uint_t n_ready = 0;
-    int_t *cols;
-    cost_t *d;
+    byte_track::uint_t lo = 0, hi = 0;
+    byte_track::int_t final_j = -1;
+    byte_track::uint_t n_ready = 0;
+    byte_track::int_t *cols;
+    byte_track::cost_t *d;
 
-    NEW(cols, int_t, n);
-    NEW(d, cost_t, n);
+    NEW(cols, byte_track::int_t, n);
+    NEW(d, byte_track::cost_t, n);
 
-    for (uint_t i = 0; i < n; i++) {
+    for (byte_track::uint_t i = 0; i < n; i++) {
         cols[i] = i;
         pred[i] = start_i;
         d[i] = cost[start_i][i] - v[i];
@@ -242,8 +240,8 @@ int_t find_path_dense(
             hi = _find_dense(n, lo, d, cols, y);
             PRINTF("check %d..%d\n", lo, hi);
             PRINT_INDEX_ARRAY(cols, n);
-            for (uint_t k = lo; k < hi; k++) {
-                const int_t j = cols[k];
+            for (byte_track::uint_t k = lo; k < hi; k++) {
+                const byte_track::int_t j = cols[k];
                 if (y[j] < 0) {
                     final_j = j;
                 }
@@ -262,9 +260,9 @@ int_t find_path_dense(
     PRINTF("found final_j=%d\n", final_j);
     PRINT_INDEX_ARRAY(cols, n);
     {
-        const cost_t mind = d[cols[lo]];
-        for (uint_t k = 0; k < n_ready; k++) {
-            const int_t j = cols[k];
+        const byte_track::cost_t mind = d[cols[lo]];
+        for (byte_track::uint_t k = 0; k < n_ready; k++) {
+            const byte_track::int_t j = cols[k];
             v[j] += d[j] - mind;
         }
     }
@@ -278,18 +276,18 @@ int_t find_path_dense(
 
 /** Augment for a dense cost matrix.
  */
-int_t _ca_dense(
-    const uint_t n, cost_t *cost[],
-    const uint_t n_free_rows,
-    int_t *free_rows, int_t *x, int_t *y, cost_t *v)
+byte_track::int_t _ca_dense(
+    const byte_track::uint_t n, byte_track::cost_t *cost[],
+    const byte_track::uint_t n_free_rows,
+    byte_track::int_t *free_rows, byte_track::int_t *x, byte_track::int_t *y, byte_track::cost_t *v)
 {
-    int_t *pred;
+    byte_track::int_t *pred;
 
-    NEW(pred, int_t, n);
+    NEW(pred, byte_track::int_t, n);
 
-    for (int_t *pfree_i = free_rows; pfree_i < free_rows + n_free_rows; pfree_i++) {
-        int_t i = -1, j;
-        uint_t k = 0;
+    for (byte_track::int_t *pfree_i = free_rows; pfree_i < free_rows + n_free_rows; pfree_i++) {
+        byte_track::int_t i = -1, j;
+        byte_track::uint_t k = 0;
 
         PRINTF("looking at free_i=%d\n", *pfree_i);
         j = find_path_dense(n, cost, *pfree_i, y, v, pred);
@@ -317,15 +315,15 @@ int_t _ca_dense(
 /** Solve dense sparse LAP.
  */
 int lapjv_internal(
-    const uint_t n, cost_t *cost[],
-    int_t *x, int_t *y)
+    const byte_track::uint_t n, byte_track::cost_t *cost[],
+    byte_track::int_t *x, byte_track::int_t *y)
 {
     int ret;
-    int_t *free_rows;
-    cost_t *v;
+    byte_track::int_t *free_rows;
+    byte_track::cost_t *v;
 
-    NEW(free_rows, int_t, n);
-    NEW(v, cost_t, n);
+    NEW(free_rows, byte_track::int_t, n);
+    NEW(v, byte_track::cost_t, n);
     ret = _ccrrt_dense(n, cost, free_rows, x, y, v);
     int i = 0;
     while (ret > 0 && i < 2) {
@@ -338,5 +336,4 @@ int lapjv_internal(
     FREE(v);
     FREE(free_rows);
     return ret;
-}
 }
