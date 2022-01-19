@@ -26,7 +26,7 @@ STrack::~STrack()
 {
 }
 
-void STrack::activate(byte_kalman::KalmanFilter &kalman_filter, int frame_id)
+void STrack::activate(KalmanFilter &kalman_filter, int frame_id)
 {
     this->kalman_filter = kalman_filter;
     this->track_id = this->next_id();
@@ -181,7 +181,7 @@ int STrack::end_frame()
     return this->frame_id;
 }
 
-void STrack::multi_predict(std::vector<STrack*> &stracks, byte_kalman::KalmanFilter &kalman_filter)
+void STrack::multi_predict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter)
 {
     for (size_t i = 0; i < stracks.size(); i++)
     {
