@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.14)
 project(bytetrack)
 
 IF(NOT CMAKE_BUILD_TYPE)
@@ -54,3 +54,24 @@ target_link_libraries(${PROJECT_NAME}
   ${EIGEN3_LIBS}
   ${OpenCV_LIBS}
   )
+
+# Build the tests if the 'BUILD_BYTETRACK_TEST' variable is set to 'ON'
+set(BUILD_BYTETRACK_TEST OFF CACHE BOOL "The flag whether to build the tests or not")
+if(BUILD_BYTETRACK_TEST)
+  find_package(GTest QUIET)
+  if(NOT GTest_FOUND)
+    message(FATAL_ERROR "GTest not found.")
+  endif()
+
+  add_executable(${PROJECT_NAME}_test
+    ${PROJECT_SOURCE_DIR}/test/test_BYTETracker.cpp
+  )
+
+  target_link_libraries(${PROJECT_NAME}_test
+    ${PROJECT_NAME}
+    GTest::GTest
+    GTest::Main
+    )
+
+  gtest_discover_tests(${PROJECT_NAME}_test)
+endif()
