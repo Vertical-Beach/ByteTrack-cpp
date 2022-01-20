@@ -314,7 +314,7 @@ byte_track::int_t _ca_dense(
 
 /** Solve dense sparse LAP.
  */
-int lapjv_internal(
+int byte_track::lapjv_internal(
     const byte_track::uint_t n, byte_track::cost_t *cost[],
     byte_track::int_t *x, byte_track::int_t *y)
 {
