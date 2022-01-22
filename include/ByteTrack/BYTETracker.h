@@ -1,7 +1,5 @@
 #pragma once
 
-#include <fstream>
-
 #include <ByteTrack/STrack.h>
 #include <ByteTrack/lapjv.h>
 #include <ByteTrack/Object.h>

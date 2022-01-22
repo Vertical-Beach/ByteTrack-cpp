@@ -8,7 +8,6 @@ byte_track::BYTETracker::BYTETracker(int frame_rate, int track_buffer)
 
     frame_id = 0;
     max_time_lost = int(frame_rate / 30.0 * track_buffer);
-    std::cout << "Init ByteTrack!" << std::endl;
 }
 
 byte_track::BYTETracker::~BYTETracker()
@@ -207,8 +206,6 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
 
     this->tracked_stracks = joint_stracks(this->tracked_stracks, activated_stracks);
     this->tracked_stracks = joint_stracks(this->tracked_stracks, refind_stracks);
-
-    //std::cout << activated_stracks.size() << std::endl;
 
     this->lost_stracks = sub_stracks(this->lost_stracks, this->tracked_stracks);
     for (size_t i = 0; i < lost_stracks.size(); i++)
@@ -522,8 +519,7 @@ double byte_track::BYTETracker::lapjv(const std::vector<std::vector<float> > &co
     {
         if (!extend_cost)
         {
-            std::cout << "set extend_cost=True" << std::endl;
-            exit(0);
+            throw std::runtime_error("The `extend_cost` variable should set True");
         }
     }
         
@@ -602,8 +598,7 @@ double byte_track::BYTETracker::lapjv(const std::vector<std::vector<float> > &co
     int ret = lapjv_internal(n, cost_ptr, x_c, y_c);
     if (ret != 0)
     {
-        std::cout << "Calculate Wrong!" << std::endl;
-        exit(0);
+        throw std::runtime_error("The result of lapjv_internal() is invalid.");
     }
 
     double opt = 0.0;
@@ -632,7 +627,6 @@ double byte_track::BYTETracker::lapjv(const std::vector<std::vector<float> > &co
             {
                 if (rowsol[i] != -1)
                 {
-                    //std::cout << i << "\t" << rowsol[i] << "\t" << cost_ptr[i][rowsol[i]] << std::endl;
                     opt += cost_ptr[i][rowsol[i]];
                 }
             }
