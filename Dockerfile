@@ -68,3 +68,5 @@ RUN mkdir -p /tmp/opencv && cd /tmp/opencv && \
     make -j "$(nproc)" | tee /tmp/opencv_build.log && \
     make install | tee /tmp/opencv_install.log && \
     cd /tmp && rm -rf opencv
+
+WORKDIR /usr/src/app
