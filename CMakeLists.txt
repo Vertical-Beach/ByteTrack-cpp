@@ -41,6 +41,7 @@ add_library(${PROJECT_NAME} SHARED
   ${PROJECT_SOURCE_DIR}/src/BYTETracker.cpp
   ${PROJECT_SOURCE_DIR}/src/kalmanFilter.cpp
   ${PROJECT_SOURCE_DIR}/src/lapjv.cpp
+  ${PROJECT_SOURCE_DIR}/src/Object.cpp
   ${PROJECT_SOURCE_DIR}/src/STrack.cpp
   )
 
