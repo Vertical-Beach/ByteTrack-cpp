@@ -1,7 +1,6 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
-
+#include <ByteTrack/Rect.h>
 #include <ByteTrack/KalmanFilter.h>
 
 namespace byte_track
@@ -11,14 +10,12 @@ enum TrackState { New = 0, Tracked, Lost, Removed };
 class STrack
 {
 public:
-    STrack(cv::Rect2f _rect, float score);
+    STrack(Rect<float> _rect, float score);
     ~STrack();
 
     void static multi_predict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter);
 
-    void static_tlwh();
-
-    std::vector<float> getTlbr() const;
+    void updateRect();
 
     void mark_lost();
     void mark_removed();
@@ -34,7 +31,7 @@ public:
     int track_id;
     int state;
 
-    cv::Rect2f rect;
+    Rect<float> rect;
  
     int frame_id;
     int tracklet_len;
@@ -47,9 +44,4 @@ public:
 private:
     KalmanFilter kalman_filter_;
 };
-
-std::vector<float> tlwh_to_xyah(const std::vector<float>& tlwh);
-std::vector<float> tlwh_to_xyah(const cv::Rect2f& tlwh);
-cv::Rect2f tlbr_to_tlwh(const std::vector<float> &tlbr);
-
 }
