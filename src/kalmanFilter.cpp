@@ -1,7 +1,5 @@
 #include <ByteTrack/kalmanFilter.h>
 
-#include <ByteTrack/kalmanFilter.h>
-
 const double byte_track::KalmanFilter::chi2inv95[10] = {
     0,
     3.8415,
