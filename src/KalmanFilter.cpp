@@ -1,4 +1,4 @@
-#include <ByteTrack/kalmanFilter.h>
+#include <ByteTrack/KalmanFilter.h>
 
 const double byte_track::KalmanFilter::chi2inv95[10] = {
     0,
