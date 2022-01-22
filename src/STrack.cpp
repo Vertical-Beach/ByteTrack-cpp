@@ -26,7 +26,7 @@ byte_track::STrack::~STrack()
 
 void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
 {
-    this->kalman_filter = kalman_filter;
+    kalman_filter_ = kalman_filter;
     this->track_id = this->next_id();
 
     std::vector<float> _tlwh_tmp(4);
@@ -40,7 +40,7 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
     xyah_box[1] = xyah[1];
     xyah_box[2] = xyah[2];
     xyah_box[3] = xyah[3];
-    auto mc = this->kalman_filter.initiate(xyah_box);
+    auto mc = kalman_filter_.initiate(xyah_box);
     this->mean = mc.first;
     this->covariance = mc.second;
 
@@ -66,7 +66,7 @@ void byte_track::STrack::re_activate(STrack &new_track, int frame_id, bool new_i
     xyah_box[1] = xyah[1];
     xyah_box[2] = xyah[2];
     xyah_box[3] = xyah[3];
-    auto mc = this->kalman_filter.update(this->mean, this->covariance, xyah_box);
+    auto mc = kalman_filter_.update(this->mean, this->covariance, xyah_box);
     this->mean = mc.first;
     this->covariance = mc.second;
 
@@ -94,7 +94,7 @@ void byte_track::STrack::update(STrack &new_track, int frame_id)
     xyah_box[2] = xyah[2];
     xyah_box[3] = xyah[3];
 
-    auto mc = this->kalman_filter.update(this->mean, this->covariance, xyah_box);
+    auto mc = kalman_filter_.update(this->mean, this->covariance, xyah_box);
     this->mean = mc.first;
     this->covariance = mc.second;
 

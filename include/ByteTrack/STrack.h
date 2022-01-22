@@ -46,6 +46,6 @@ public:
     float score;
 
 private:
-    KalmanFilter kalman_filter;
+    KalmanFilter kalman_filter_;
 };
 }

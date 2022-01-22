@@ -32,15 +32,15 @@ private:
         bool extend_cost = false, float cost_limit = LONG_MAX, bool return_cost = true);
 
 private:
-    float track_thresh;
-    float high_thresh;
-    float match_thresh;
-    int frame_id;
-    int max_time_lost;
+    float track_thresh_;
+    float high_thresh_;
+    float match_thresh_;
+    int frame_id_;
+    int max_time_lost_;
 
-    std::vector<STrack> tracked_stracks;
-    std::vector<STrack> lost_stracks;
-    std::vector<STrack> removed_stracks;
-    KalmanFilter kalman_filter;
+    std::vector<STrack> tracked_stracks_;
+    std::vector<STrack> lost_stracks_;
+    std::vector<STrack> removed_stracks_;
+    KalmanFilter kalman_filter_;
 };
 }
