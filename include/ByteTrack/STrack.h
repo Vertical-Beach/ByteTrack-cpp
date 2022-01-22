@@ -17,7 +17,8 @@ public:
     void static multi_predict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter);
 
     void static_tlwh();
-    void static_tlbr();
+
+    std::vector<float> getTlbr() const;
 
     void mark_lost();
     void mark_removed();
@@ -34,8 +35,7 @@ public:
     int state;
 
     cv::Rect2f rect;
-    std::vector<float> tlbr;
-
+ 
     int frame_id;
     int tracklet_len;
     int start_frame;

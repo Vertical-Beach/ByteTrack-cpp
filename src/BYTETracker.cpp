@@ -445,11 +445,11 @@ std::vector<std::vector<float> > byte_track::BYTETracker::iou_distance(std::vect
     std::vector<std::vector<float> > atlbrs, btlbrs;
     for (size_t i = 0; i < atracks.size(); i++)
     {
-        atlbrs.push_back(atracks[i]->tlbr);
+        atlbrs.push_back(atracks[i]->getTlbr());
     }
     for (size_t i = 0; i < btracks.size(); i++)
     {
-        btlbrs.push_back(btracks[i].tlbr);
+        btlbrs.push_back(btracks[i].getTlbr());
     }
 
     dist_size = atracks.size();
@@ -475,11 +475,11 @@ std::vector<std::vector<float> > byte_track::BYTETracker::iou_distance(std::vect
     std::vector<std::vector<float> > atlbrs, btlbrs;
     for (size_t i = 0; i < atracks.size(); i++)
     {
-        atlbrs.push_back(atracks[i].tlbr);
+        atlbrs.push_back(atracks[i].getTlbr());
     }
     for (size_t i = 0; i < btracks.size(); i++)
     {
-        btlbrs.push_back(btracks[i].tlbr);
+        btlbrs.push_back(btracks[i].getTlbr());
     }
 
     std::vector<std::vector<float> > _ious = ious(atlbrs, btlbrs);

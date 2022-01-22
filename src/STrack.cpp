@@ -6,10 +6,7 @@ byte_track::STrack::STrack(cv::Rect2f _rect, float score)
     track_id = 0;
     state = TrackState::New;
 
-    tlbr.resize(4);
     rect = _rect;
-
-    static_tlbr();
 
     frame_id = 0;
     tracklet_len = 0;
@@ -37,7 +34,6 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
     this->covariance = mc.second;
 
     static_tlwh();
-    static_tlbr();
 
     this->tracklet_len = 0;
     this->state = TrackState::Tracked;
@@ -63,7 +59,6 @@ void byte_track::STrack::re_activate(STrack &new_track, int frame_id, bool new_i
     this->covariance = mc.second;
 
     static_tlwh();
-    static_tlbr();
 
     this->tracklet_len = 0;
     this->state = TrackState::Tracked;
@@ -91,7 +86,6 @@ void byte_track::STrack::update(STrack &new_track, int frame_id)
     this->covariance = mc.second;
 
     static_tlwh();
-    static_tlbr();
 
     this->state = TrackState::Tracked;
     this->is_activated = true;
@@ -107,12 +101,14 @@ void byte_track::STrack::static_tlwh()
     rect.y = mean[1] - rect.height / 2;
 }
 
-void byte_track::STrack::static_tlbr()
+std::vector<float> byte_track::STrack::getTlbr() const
 {
+    std::vector<float> tlbr(4);
     tlbr[0] = rect.x;
     tlbr[1] = rect.y;
     tlbr[2] = rect.x + rect.width;
     tlbr[3] = rect.y + rect.height;
+    return tlbr;
 }
 
 void byte_track::STrack::mark_lost()
