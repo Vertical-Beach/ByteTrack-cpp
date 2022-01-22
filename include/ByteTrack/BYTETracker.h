@@ -12,6 +12,8 @@ struct Object
     cv::Rect_<float> rect;
     int label;
     float prob;
+    Object(const cv::Rect_<float>& _rect, const int& _label, const float& _prob) :
+        rect(_rect), label(_label), prob(_prob) { }
 };
 
 class BYTETracker
