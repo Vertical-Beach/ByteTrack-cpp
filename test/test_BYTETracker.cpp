@@ -131,10 +131,10 @@ TEST(ByteTrack, BYTETracker)
             for (const auto outputs_per_frame : outputs)
             {
                 const auto &ref = outputs_ref[frame_id_inputs_ref][outputs_per_frame.track_id];
-                EXPECT_NEAR(ref.x, outputs_per_frame.tlwh[0], EPS);
-                EXPECT_NEAR(ref.y, outputs_per_frame.tlwh[1], EPS);
-                EXPECT_NEAR(ref.width, outputs_per_frame.tlwh[2], EPS);
-                EXPECT_NEAR(ref.height, outputs_per_frame.tlwh[3], EPS);
+                EXPECT_NEAR(ref.x, outputs_per_frame.rect.x, EPS);
+                EXPECT_NEAR(ref.y, outputs_per_frame.rect.y, EPS);
+                EXPECT_NEAR(ref.width, outputs_per_frame.rect.width, EPS);
+                EXPECT_NEAR(ref.height, outputs_per_frame.rect.height, EPS);
             }
         }
     }

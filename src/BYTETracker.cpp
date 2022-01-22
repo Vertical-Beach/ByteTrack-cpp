@@ -49,7 +49,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
 
             float score = objects[i].prob;
 
-            STrack strack(STrack::tlbr_to_tlwh(tlbr_), score);
+            STrack strack(tlbr_to_tlwh(tlbr_), score);
             if (score >= track_thresh_)
             {
                 detections.push_back(strack);

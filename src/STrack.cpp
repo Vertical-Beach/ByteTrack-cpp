@@ -1,19 +1,16 @@
 #include <ByteTrack/STrack.h>
 
-byte_track::STrack::STrack(std::vector<float> tlwh_, float score)
+byte_track::STrack::STrack(cv::Rect2f _rect, float score)
 {
-    _tlwh.resize(4);
-    _tlwh.assign(tlwh_.begin(), tlwh_.end());
-
     is_activated = false;
     track_id = 0;
     state = TrackState::New;
-    
-    tlwh.resize(4);
-    tlbr.resize(4);
 
-    static_tlwh();
+    tlbr.resize(4);
+    rect = _rect;
+
     static_tlbr();
+
     frame_id = 0;
     tracklet_len = 0;
     this->score = score;
@@ -29,12 +26,7 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
     kalman_filter_ = kalman_filter;
     this->track_id = this->next_id();
 
-    std::vector<float> _tlwh_tmp(4);
-    _tlwh_tmp[0] = this->_tlwh[0];
-    _tlwh_tmp[1] = this->_tlwh[1];
-    _tlwh_tmp[2] = this->_tlwh[2];
-    _tlwh_tmp[3] = this->_tlwh[3];
-    std::vector<float> xyah = tlwh_to_xyah(_tlwh_tmp);
+    std::vector<float> xyah = tlwh_to_xyah(rect);
     DETECTBOX xyah_box;
     xyah_box[0] = xyah[0];
     xyah_box[1] = xyah[1];
@@ -60,7 +52,7 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
 
 void byte_track::STrack::re_activate(STrack &new_track, int frame_id, bool new_id)
 {
-    std::vector<float> xyah = tlwh_to_xyah(new_track.tlwh);
+    std::vector<float> xyah = tlwh_to_xyah(new_track.rect);
     DETECTBOX xyah_box;
     xyah_box[0] = xyah[0];
     xyah_box[1] = xyah[1];
@@ -87,7 +79,7 @@ void byte_track::STrack::update(STrack &new_track, int frame_id)
     this->frame_id = frame_id;
     this->tracklet_len++;
 
-    std::vector<float> xyah = tlwh_to_xyah(new_track.tlwh);
+    std::vector<float> xyah = tlwh_to_xyah(new_track.rect);
     DETECTBOX xyah_box;
     xyah_box[0] = xyah[0];
     xyah_box[1] = xyah[1];
@@ -109,52 +101,18 @@ void byte_track::STrack::update(STrack &new_track, int frame_id)
 
 void byte_track::STrack::static_tlwh()
 {
-    if (this->state == TrackState::New)
-    {
-        tlwh[0] = _tlwh[0];
-        tlwh[1] = _tlwh[1];
-        tlwh[2] = _tlwh[2];
-        tlwh[3] = _tlwh[3];
-        return;
-    }
-
-    tlwh[0] = mean[0];
-    tlwh[1] = mean[1];
-    tlwh[2] = mean[2];
-    tlwh[3] = mean[3];
-
-    tlwh[2] *= tlwh[3];
-    tlwh[0] -= tlwh[2] / 2;
-    tlwh[1] -= tlwh[3] / 2;
+    rect.width = mean[2] * mean[3];
+    rect.height = mean[3];
+    rect.x = mean[0] - rect.width / 2;
+    rect.y = mean[1] - rect.height / 2;
 }
 
 void byte_track::STrack::static_tlbr()
 {
-    tlbr.clear();
-    tlbr.assign(tlwh.begin(), tlwh.end());
-    tlbr[2] += tlbr[0];
-    tlbr[3] += tlbr[1];
-}
-
-std::vector<float> byte_track::STrack::tlwh_to_xyah(std::vector<float> tlwh_tmp)
-{
-    std::vector<float> tlwh_output = tlwh_tmp;
-    tlwh_output[0] += tlwh_output[2] / 2;
-    tlwh_output[1] += tlwh_output[3] / 2;
-    tlwh_output[2] /= tlwh_output[3];
-    return tlwh_output;
-}
-
-std::vector<float> byte_track::STrack::to_xyah()
-{
-    return tlwh_to_xyah(tlwh);
-}
-
-std::vector<float> byte_track::STrack::tlbr_to_tlwh(std::vector<float> &tlbr)
-{
-    tlbr[2] -= tlbr[0];
-    tlbr[3] -= tlbr[1];
-    return tlbr;
+    tlbr[0] = rect.x;
+    tlbr[1] = rect.y;
+    tlbr[2] = rect.x + rect.width;
+    tlbr[3] = rect.y + rect.height;
 }
 
 void byte_track::STrack::mark_lost()
@@ -189,4 +147,34 @@ void byte_track::STrack::multi_predict(std::vector<STrack*> &stracks, KalmanFilt
         }
         kalman_filter.predict(stracks[i]->mean, stracks[i]->covariance);
     }
+}
+
+std::vector<float> byte_track::tlwh_to_xyah(const std::vector<float>& tlwh)
+{
+    std::vector<float> xyah(4);
+    xyah[0] = tlwh[0] + tlwh[2] / 2;
+    xyah[1] = tlwh[1] + tlwh[3] / 2;
+    xyah[2] = tlwh[2] / tlwh[3];
+    xyah[3] = tlwh[3];
+    return xyah;
+}
+
+std::vector<float> byte_track::tlwh_to_xyah(const cv::Rect2f& tlwh)
+{
+    std::vector<float> xyah(4);
+    xyah[0] = tlwh.x + tlwh.width / 2;
+    xyah[1] = tlwh.y + tlwh.height / 2;
+    xyah[2] = tlwh.width / tlwh.height;
+    xyah[3] = tlwh.height;
+    return xyah;
+}
+
+cv::Rect2f byte_track::tlbr_to_tlwh(const std::vector<float> &tlbr)
+{
+    cv::Rect2f rect;
+    rect.x = tlbr[0];
+    rect.y = tlbr[1];
+    rect.width = tlbr[2] - tlbr[0];
+    rect.height = tlbr[3] - tlbr[1];
+    return rect;
 }
