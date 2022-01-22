@@ -42,6 +42,7 @@ add_library(${PROJECT_NAME} SHARED
   ${PROJECT_SOURCE_DIR}/src/KalmanFilter.cpp
   ${PROJECT_SOURCE_DIR}/src/lapjv.cpp
   ${PROJECT_SOURCE_DIR}/src/Object.cpp
+  ${PROJECT_SOURCE_DIR}/src/Rect.cpp
   ${PROJECT_SOURCE_DIR}/src/STrack.cpp
   )
 
