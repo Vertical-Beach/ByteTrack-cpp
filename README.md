@@ -44,10 +44,10 @@ ctest --verbose
 You can use Docker to build and test the implementation.
 
 ```shell
-$ docker build . -t bytetrack-cpp:latest
-$ docker run -ti --rm \
-             -v ${PWD}:/usr/src/app \
-             bytetrack-cpp:latest
+docker build . -t bytetrack-cpp:latest
+docker run -ti --rm \
+           -v ${PWD}:/usr/src/app \
+           bytetrack-cpp:latest
 ```
 
 ## License
