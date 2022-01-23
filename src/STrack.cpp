@@ -60,9 +60,7 @@ const size_t& byte_track::STrack::getTrackletLength() const
 
 void byte_track::STrack::activate(const size_t& frame_id, const size_t& track_id)
 {
-    const auto mc = kalman_filter_.initiate(rect_.getXyah());
-    mean_ = mc.first;
-    covariance_ = mc.second;
+    kalman_filter_.initiate(mean_, covariance_, rect_.getXyah());
 
     updateRect();
 
@@ -79,9 +77,7 @@ void byte_track::STrack::activate(const size_t& frame_id, const size_t& track_id
 
 void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame_id, const int &new_track_id)
 {
-    const auto mc = kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
-    mean_ = mc.first;
-    covariance_ = mc.second;
+    kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
 
     updateRect();
 
@@ -107,9 +103,7 @@ void byte_track::STrack::predict()
 
 void byte_track::STrack::update(const STrack &new_track, const size_t &frame_id)
 {
-    const auto mc = kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
-    mean_ = mc.first;
-    covariance_ = mc.second;
+    kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
 
     updateRect();
 
