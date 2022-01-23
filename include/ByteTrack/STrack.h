@@ -13,17 +13,17 @@ public:
     STrack(const Rect<float>& _rect, const float& _score);
     ~STrack();
 
-    void static multi_predict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter);
+    void static multiPredict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter);
 
     void updateRect();
 
-    void mark_lost();
-    void mark_removed();
-    int next_id();
-    int end_frame();
+    void markAsLost();
+    void markAsRemoved();
+    int getNextId();
+    int getEndFrame();
     
     void activate(KalmanFilter &kalman_filter, int frame_id);
-    void re_activate(STrack &new_track, int frame_id, bool new_id = false);
+    void reActivate(STrack &new_track, int frame_id, bool new_id = false);
     void update(STrack &new_track, int frame_id);
 
 public:

@@ -30,7 +30,7 @@ public:
         const StateCov& covariance,
         const Xyah<float>& measurement);
 
-    Eigen::Matrix<float, 1, -1> gating_distance(
+    Eigen::Matrix<float, 1, -1> calcGatingDistance(
         const StateMean& mean,
         const StateCov& covariance,
         const std::vector<Xyah<float>>& measurements,

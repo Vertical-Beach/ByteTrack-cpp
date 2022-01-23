@@ -110,7 +110,7 @@ byte_track::KalmanFilter::State byte_track::KalmanFilter::update(
     return std::make_pair(new_mean, new_covariance);
 }
 
-Eigen::Matrix<float, 1, -1> byte_track::KalmanFilter::gating_distance(
+Eigen::Matrix<float, 1, -1> byte_track::KalmanFilter::calcGatingDistance(
     const StateMean &mean,
     const StateCov &covariance,
     const std::vector<DetectBox> &measurements,

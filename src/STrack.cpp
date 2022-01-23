@@ -22,7 +22,7 @@ byte_track::STrack::~STrack()
 void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
 {
     kalman_filter_ = kalman_filter;
-    this->track_id = this->next_id();
+    this->track_id = this->getNextId();
 
     const auto xyah = rect.getXyah();
     KalmanFilter::DetectBox xyah_box;
@@ -47,7 +47,7 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
     this->start_frame = frame_id;
 }
 
-void byte_track::STrack::re_activate(STrack &new_track, int frame_id, bool new_id)
+void byte_track::STrack::reActivate(STrack &new_track, int frame_id, bool new_id)
 {
     const auto xyah = new_track.rect.getXyah();
     KalmanFilter::DetectBox xyah_box;
@@ -67,7 +67,7 @@ void byte_track::STrack::re_activate(STrack &new_track, int frame_id, bool new_i
     this->frame_id = frame_id;
     this->score = new_track.score;
     if (new_id)
-        this->track_id = next_id();
+        this->track_id = getNextId();
 }
 
 void byte_track::STrack::update(STrack &new_track, int frame_id)
@@ -102,29 +102,29 @@ void byte_track::STrack::updateRect()
     rect.y() = mean[1] - rect.height() / 2;
 }
 
-void byte_track::STrack::mark_lost()
+void byte_track::STrack::markAsLost()
 {
     state = TrackState::Lost;
 }
 
-void byte_track::STrack::mark_removed()
+void byte_track::STrack::markAsRemoved()
 {
     state = TrackState::Removed;
 }
 
-int byte_track::STrack::next_id()
+int byte_track::STrack::getNextId()
 {
     static int _count = 0;
     _count++;
     return _count;
 }
 
-int byte_track::STrack::end_frame()
+int byte_track::STrack::getEndFrame()
 {
     return this->frame_id;
 }
 
-void byte_track::STrack::multi_predict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter)
+void byte_track::STrack::multiPredict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter)
 {
     for (size_t i = 0; i < stracks.size(); i++)
     {

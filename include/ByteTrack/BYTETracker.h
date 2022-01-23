@@ -17,22 +17,22 @@ public:
     ~BYTETracker();
 
     std::vector<STrack> update(const std::vector<Object>& objects);
-    cv::Scalar get_color(int idx);
+    cv::Scalar getColor(int idx);
 
 private:
-    std::vector<STrack*> joint_stracks(std::vector<STrack*> &tlista, std::vector<STrack> &tlistb);
-    std::vector<STrack> joint_stracks(std::vector<STrack> &tlista, std::vector<STrack> &tlistb);
+    std::vector<STrack*> jointStracks(std::vector<STrack*> &tlista, std::vector<STrack> &tlistb);
+    std::vector<STrack> jointStracks(std::vector<STrack> &tlista, std::vector<STrack> &tlistb);
 
-    std::vector<STrack> sub_stracks(std::vector<STrack> &tlista, std::vector<STrack> &tlistb);
-    void remove_duplicate_stracks(std::vector<STrack> &resa, std::vector<STrack> &resb, std::vector<STrack> &stracksa, std::vector<STrack> &stracksb);
+    std::vector<STrack> subStracks(std::vector<STrack> &tlista, std::vector<STrack> &tlistb);
+    void removeDuplicateStracks(std::vector<STrack> &resa, std::vector<STrack> &resb, std::vector<STrack> &stracksa, std::vector<STrack> &stracksb);
 
-    void linear_assignment(std::vector<std::vector<float> > &cost_matrix, int cost_matrix_size, int cost_matrix_size_size, float thresh,
-        std::vector<std::vector<int> > &matches, std::vector<int> &unmatched_a, std::vector<int> &unmatched_b);
-    std::vector<std::vector<float> > iou_distance(std::vector<STrack*> &atracks, std::vector<STrack> &btracks, int &dist_size, int &dist_size_size);
-    std::vector<std::vector<float> > iou_distance(std::vector<STrack> &atracks, std::vector<STrack> &btracks);
-    std::vector<std::vector<float> > ious(std::vector<byte_track::Tlbr<float>> &atlbrs, std::vector<byte_track::Tlbr<float>> &btlbrs);
+    void linearAssignment(std::vector<std::vector<float> > &cost_matrix, int cost_matrix_size, int cost_matrix_size_size, float thresh,
+                          std::vector<std::vector<int> > &matches, std::vector<int> &unmatched_a, std::vector<int> &unmatched_b);
+    std::vector<std::vector<float> > calcIouDistance(std::vector<STrack*> &atracks, std::vector<STrack> &btracks, int &dist_size, int &dist_size_size);
+    std::vector<std::vector<float> > calcIouDistance(std::vector<STrack> &atracks, std::vector<STrack> &btracks);
+    std::vector<std::vector<float> > getIous(std::vector<byte_track::Tlbr<float>> &atlbrs, std::vector<byte_track::Tlbr<float>> &btlbrs);
 
-    double lapjv(const std::vector<std::vector<float> > &cost, std::vector<int> &rowsol, std::vector<int> &colsol, 
+    double execLapjv(const std::vector<std::vector<float> > &cost, std::vector<int> &rowsol, std::vector<int> &colsol,
         bool extend_cost = false, float cost_limit = LONG_MAX, bool return_cost = true);
 
 private:
