@@ -106,6 +106,24 @@ byte_track::Xyah<T> byte_track::Rect<T>::getXyah() const
 }
 
 template<typename T>
+float byte_track::Rect<T>::calcIoU(const Rect<T>& other) const
+{
+    const float box_area = (other.tlwh[2] + 1) * (other.tlwh[3] + 1);
+    const float iw = std::min(tlwh[0] + tlwh[2], other.tlwh[0] + other.tlwh[2]) - std::max(tlwh[0], other.tlwh[0]) + 1;
+    float iou = 0;
+    if (iw > 0)
+    {
+        const float ih = std::min(tlwh[1] + tlwh[3], other.tlwh[1] + other.tlwh[3]) - std::max(tlwh[1], other.tlwh[1]) + 1;
+        if (ih > 0)
+        {
+            const float ua = (tlwh[0] + tlwh[2] - tlwh[0] + 1) * (tlwh[1] + tlwh[3] - tlwh[1] + 1) + box_area - iw * ih;
+            iou = iw * ih / ua;
+        }
+    }
+    return iou;
+}
+
+template<typename T>
 byte_track::Rect<T> byte_track::generate_rect_by_tlbr(const byte_track::Tlbr<T>& tlbr)
 {
     return byte_track::Rect<T>(tlbr[0], tlbr[1], tlbr[2] - tlbr[0], tlbr[3] - tlbr[1]);

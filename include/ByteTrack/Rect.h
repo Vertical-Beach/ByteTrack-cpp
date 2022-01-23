@@ -41,6 +41,8 @@ class Rect
 
     Tlbr<T> getTlbr() const;
     Xyah<T> getXyah() const;
+
+    float calcIoU(const Rect<T>& other) const;
 };
 
 template<typename T>
