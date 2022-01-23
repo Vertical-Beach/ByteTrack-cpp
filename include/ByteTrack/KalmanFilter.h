@@ -9,7 +9,6 @@ namespace byte_track
 class KalmanFilter
 {
 public:
-    static const double chi2inv95[10];
     KalmanFilter(const float& std_weight_position = 1. / 20,
                  const float& std_weight_velocity = 1. / 160);
     KAL_DATA initiate(const DETECTBOX& measurement);

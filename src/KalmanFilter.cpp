@@ -1,17 +1,5 @@
 #include <ByteTrack/KalmanFilter.h>
 
-const double byte_track::KalmanFilter::chi2inv95[10] = {
-    0,
-    3.8415,
-    5.9915,
-    7.8147,
-    9.4877,
-    11.070,
-    12.592,
-    14.067,
-    15.507,
-    16.919};
-
 byte_track::KalmanFilter::KalmanFilter(const float& std_weight_position,
                                        const float& std_weight_velocity) :
     motion_mat_(Eigen::MatrixXf::Identity(8, 8)),
