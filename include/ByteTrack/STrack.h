@@ -37,8 +37,8 @@ public:
     int tracklet_len;
     int start_frame;
 
-    KAL_MEAN mean;
-    KAL_COVA covariance;
+    KalmanFilter::StateMean mean;
+    KalmanFilter::StateCov covariance;
     float score;
 
 private:

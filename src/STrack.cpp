@@ -25,7 +25,7 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
     this->track_id = this->next_id();
 
     const auto xyah = rect.getXyah();
-    DETECTBOX xyah_box;
+    KalmanFilter::DetectBox xyah_box;
     xyah_box[0] = xyah[0];
     xyah_box[1] = xyah[1];
     xyah_box[2] = xyah[2];
@@ -50,7 +50,7 @@ void byte_track::STrack::activate(KalmanFilter &kalman_filter, int frame_id)
 void byte_track::STrack::re_activate(STrack &new_track, int frame_id, bool new_id)
 {
     const auto xyah = new_track.rect.getXyah();
-    DETECTBOX xyah_box;
+    KalmanFilter::DetectBox xyah_box;
     xyah_box[0] = xyah[0];
     xyah_box[1] = xyah[1];
     xyah_box[2] = xyah[2];
@@ -76,7 +76,7 @@ void byte_track::STrack::update(STrack &new_track, int frame_id)
     this->tracklet_len++;
 
     const auto xyah = new_track.rect.getXyah();
-    DETECTBOX xyah_box;
+    KalmanFilter::DetectBox xyah_box;
     xyah_box[0] = xyah[0];
     xyah_box[1] = xyah[1];
     xyah_box[2] = xyah[2];

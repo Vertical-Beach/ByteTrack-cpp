@@ -1,27 +1,39 @@
 #pragma once
 
-#include <Eigen/Cholesky>
+#include <Eigen/Dense>
 
-#include <ByteTrack/dataType.h>
+#include <ByteTrack/Rect.h>
 
 namespace byte_track
 {
 class KalmanFilter
 {
 public:
+    using DetectBox = Xyah<float>;
+    using DetectBoxes = Eigen::Matrix<float, -1, 4, Eigen::RowMajor>;
+
+    using StateMean = Eigen::Matrix<float, 1, 8, Eigen::RowMajor>;
+    using StateCov = Eigen::Matrix<float, 8, 8, Eigen::RowMajor>;
+
+    using StateHMean = Eigen::Matrix<float, 1, 4, Eigen::RowMajor>;
+    using StateHCov = Eigen::Matrix<float, 4, 4, Eigen::RowMajor>;
+
+    using State = std::pair<StateMean, StateCov>;
+    using StateH = std::pair<StateHMean, StateHCov>;
+
     KalmanFilter(const float& std_weight_position = 1. / 20,
                  const float& std_weight_velocity = 1. / 160);
-    KAL_DATA initiate(const DETECTBOX& measurement);
-    void predict(KAL_MEAN& mean, KAL_COVA& covariance);
-    KAL_HDATA project(const KAL_MEAN& mean, const KAL_COVA& covariance);
-    KAL_DATA update(const KAL_MEAN& mean,
-        const KAL_COVA& covariance,
-        const DETECTBOX& measurement);
+    State initiate(const Xyah<float>& measurement);
+    void predict(StateMean& mean, StateCov& covariance);
+    StateH project(const StateMean& mean, const StateCov& covariance);
+    State update(const StateMean& mean,
+        const StateCov& covariance,
+        const Xyah<float>& measurement);
 
     Eigen::Matrix<float, 1, -1> gating_distance(
-        const KAL_MEAN& mean,
-        const KAL_COVA& covariance,
-        const std::vector<DETECTBOX>& measurements,
+        const StateMean& mean,
+        const StateCov& covariance,
+        const std::vector<Xyah<float>>& measurements,
         bool only_position = false);
 
 private:
