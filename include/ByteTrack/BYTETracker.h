@@ -47,6 +47,5 @@ private:
     std::vector<STrack> tracked_stracks_;
     std::vector<STrack> lost_stracks_;
     std::vector<STrack> removed_stracks_;
-    KalmanFilter kalman_filter_;
 };
 }
