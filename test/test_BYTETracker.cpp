@@ -121,21 +121,21 @@ TEST(ByteTrack, BYTETracker)
 
         // Test BYTETracker::update()
         byte_track::BYTETracker tracker(fps, track_buffer);
-        for (const auto &inputs_ref_per_frame : inputs_ref)
+        for (const auto &[frame_id, objects] : inputs_ref)
         {
-            const auto &frame_id_inputs_ref = inputs_ref_per_frame.first;
-            const auto &objects_inputs_ref = inputs_ref_per_frame.second;
-            const auto outputs = tracker.update(objects_inputs_ref);
+            const auto outputs = tracker.update(objects);
 
             // Verify between the reference data and the output of the BYTETracker impl
-            EXPECT_EQ(outputs.size(), outputs_ref[frame_id_inputs_ref].size());
+            EXPECT_EQ(outputs.size(), outputs_ref[frame_id].size());
             for (const auto &outputs_per_frame : outputs)
             {
-                const auto &ref = outputs_ref[frame_id_inputs_ref][outputs_per_frame.track_id];
-                EXPECT_NEAR(ref.x, outputs_per_frame.rect.x(), EPS);
-                EXPECT_NEAR(ref.y, outputs_per_frame.rect.y(), EPS);
-                EXPECT_NEAR(ref.width, outputs_per_frame.rect.width(), EPS);
-                EXPECT_NEAR(ref.height, outputs_per_frame.rect.height(), EPS);
+                const auto &rect = outputs_per_frame.getRect();
+                const auto &track_id = outputs_per_frame.getTrackId();
+                const auto &ref = outputs_ref[frame_id][track_id];
+                EXPECT_NEAR(ref.x, rect.x(), EPS);
+                EXPECT_NEAR(ref.y, rect.y(), EPS);
+                EXPECT_NEAR(ref.width, rect.width(), EPS);
+                EXPECT_NEAR(ref.height, rect.height(), EPS);
             }
         }
     }

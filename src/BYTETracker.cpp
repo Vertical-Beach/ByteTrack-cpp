@@ -67,7 +67,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     // Add newly detected tracklets to tracked_stracks
     for (size_t i = 0; i < tracked_stracks_.size(); i++)
     {
-        if (!tracked_stracks_[i].is_activated)
+        if (!tracked_stracks_[i].isActivated())
             unconfirmed.push_back(&tracked_stracks_[i]);
         else
             tracked_stracks.push_back(&tracked_stracks_[i]);
@@ -75,7 +75,10 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
 
     ////////////////// Step 2: First association, with IoU //////////////////
     strack_pool = jointStracks(tracked_stracks, lost_stracks_);
-    STrack::multiPredict(strack_pool, kalman_filter_);
+    for (auto & strack : strack_pool)
+    {
+        strack->predict();
+    }
 
     std::vector<std::vector<float> > dists;
     int dist_size = 0, dist_size_size = 0;
@@ -89,7 +92,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     {
         STrack *track = strack_pool[matches[i][0]];
         STrack *det = &detections[matches[i][1]];
-        if (track->state == TrackState::Tracked)
+        if (track->getSTrackState() == STrackState::Tracked)
         {
             track->update(*det, frame_id_);
             activated_stracks.push_back(*track);
@@ -111,7 +114,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     
     for (size_t i = 0; i < u_track.size(); i++)
     {
-        if (strack_pool[u_track[i]]->state == TrackState::Tracked)
+        if (strack_pool[u_track[i]]->getSTrackState() == STrackState::Tracked)
         {
             r_tracked_stracks.push_back(strack_pool[u_track[i]]);
         }
@@ -129,7 +132,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     {
         STrack *track = r_tracked_stracks[matches[i][0]];
         STrack *det = &detections[matches[i][1]];
-        if (track->state == TrackState::Tracked)
+        if (track->getSTrackState() == STrackState::Tracked)
         {
             track->update(*det, frame_id_);
             activated_stracks.push_back(*track);
@@ -144,7 +147,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     for (size_t i = 0; i < u_track.size(); i++)
     {
         STrack *track = r_tracked_stracks[u_track[i]];
-        if (track->state != TrackState::Lost)
+        if (track->getSTrackState() != STrackState::Lost)
         {
             track->markAsLost();
             lost_stracks.push_back(*track);
@@ -180,9 +183,9 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     for (size_t i = 0; i < u_detection.size(); i++)
     {
         STrack *track = &detections[u_detection[i]];
-        if (track->score < high_thresh_)
+        if (track->getScore() < high_thresh_)
             continue;
-        track->activate(kalman_filter_, frame_id_);
+        track->activate(frame_id_);
         activated_stracks.push_back(*track);
     }
 
@@ -198,7 +201,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     
     for (size_t i = 0; i < tracked_stracks_.size(); i++)
     {
-        if (tracked_stracks_[i].state == TrackState::Tracked)
+        if (tracked_stracks_[i].getSTrackState() == STrackState::Tracked)
         {
             tracked_stracks_swap.push_back(tracked_stracks_[i]);
         }
@@ -230,7 +233,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     
     for (size_t i = 0; i < tracked_stracks_.size(); i++)
     {
-        if (tracked_stracks_[i].is_activated)
+        if (tracked_stracks_[i].isActivated())
         {
             output_stracks.push_back(tracked_stracks_[i]);
         }
@@ -243,12 +246,12 @@ std::vector<byte_track::STrack*> byte_track::BYTETracker::jointStracks(std::vect
     std::vector<STrack*> res;
     for (size_t i = 0; i < tlista.size(); i++)
     {
-        exists.insert(std::pair<int, int>(tlista[i]->track_id, 1));
+        exists.insert(std::pair<int, int>(tlista[i]->getTrackId(), 1));
         res.push_back(tlista[i]);
     }
     for (size_t i = 0; i < tlistb.size(); i++)
     {
-        int tid = tlistb[i].track_id;
+        int tid = tlistb[i].getTrackId();
         if (!exists[tid] || exists.count(tid) == 0)
         {
             exists[tid] = 1;
@@ -264,12 +267,12 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::jointStracks(std::vecto
     std::vector<STrack> res;
     for (size_t i = 0; i < tlista.size(); i++)
     {
-        exists.insert(std::pair<int, int>(tlista[i].track_id, 1));
+        exists.insert(std::pair<int, int>(tlista[i].getTrackId(), 1));
         res.push_back(tlista[i]);
     }
     for (size_t i = 0; i < tlistb.size(); i++)
     {
-        int tid = tlistb[i].track_id;
+        int tid = tlistb[i].getTrackId();
         if (!exists[tid] || exists.count(tid) == 0)
         {
             exists[tid] = 1;
@@ -284,11 +287,11 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::subStracks(std::vector<
     std::map<int, STrack> stracks;
     for (size_t i = 0; i < tlista.size(); i++)
     {
-        stracks.insert(std::pair<int, STrack>(tlista[i].track_id, tlista[i]));
+        stracks.insert(std::pair<int, STrack>(tlista[i].getTrackId(), tlista[i]));
     }
     for (size_t i = 0; i < tlistb.size(); i++)
     {
-        int tid = tlistb[i].track_id;
+        int tid = tlistb[i].getTrackId();
         if (stracks.count(tid) != 0)
         {
             stracks.erase(tid);
@@ -323,8 +326,8 @@ void byte_track::BYTETracker::removeDuplicateStracks(std::vector<STrack> &resa, 
     std::vector<int> dupa, dupb;
     for (size_t i = 0; i < pairs.size(); i++)
     {
-        int timep = stracksa[pairs[i].first].frame_id - stracksa[pairs[i].first].start_frame;
-        int timeq = stracksb[pairs[i].second].frame_id - stracksb[pairs[i].second].start_frame;
+        int timep = stracksa[pairs[i].first].getFrameId() - stracksa[pairs[i].first].getStartFrameId();
+        int timeq = stracksb[pairs[i].second].getFrameId() - stracksb[pairs[i].second].getStartFrameId();
         if (timep > timeq)
             dupb.push_back(pairs[i].second);
         else
@@ -447,11 +450,11 @@ std::vector<std::vector<float> > byte_track::BYTETracker::calcIouDistance(std::v
     std::vector<byte_track::Tlbr<float>> atlbrs, btlbrs;
     for (size_t i = 0; i < atracks.size(); i++)
     {
-        atlbrs.push_back(atracks[i]->rect.getTlbr());
+        atlbrs.push_back(atracks[i]->getRect().getTlbr());
     }
     for (size_t i = 0; i < btracks.size(); i++)
     {
-        btlbrs.push_back(btracks[i].rect.getTlbr());
+        btlbrs.push_back(btracks[i].getRect().getTlbr());
     }
 
     dist_size = atracks.size();
@@ -477,11 +480,11 @@ std::vector<std::vector<float> > byte_track::BYTETracker::calcIouDistance(std::v
     std::vector<byte_track::Tlbr<float>> atlbrs, btlbrs;
     for (size_t i = 0; i < atracks.size(); i++)
     {
-        atlbrs.push_back(atracks[i].rect.getTlbr());
+        atlbrs.push_back(atracks[i].getRect().getTlbr());
     }
     for (size_t i = 0; i < btracks.size(); i++)
     {
-        btlbrs.push_back(btracks[i].rect.getTlbr());
+        btlbrs.push_back(btracks[i].getRect().getTlbr());
     }
 
     std::vector<std::vector<float> > _getIous = getIous(atlbrs, btlbrs);

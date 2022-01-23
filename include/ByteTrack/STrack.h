@@ -5,43 +5,56 @@
 
 namespace byte_track
 {
-enum TrackState { New = 0, Tracked, Lost, Removed };
+enum class STrackState {
+    New = 0,
+    Tracked = 1,
+    Lost = 2,
+    Removed = 3,
+};
 
 class STrack
 {
 public:
-    STrack(const Rect<float>& _rect, const float& _score);
+    STrack(const Rect<float>& rect, const float& score);
     ~STrack();
 
-    void static multiPredict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter);
+    const Rect<float>& getRect() const;
+    const STrackState& getSTrackState() const;
 
-    void updateRect();
+    const bool& isActivated() const;
+    const float& getScore() const;
+    const size_t& getTrackId() const;
+    const size_t& getFrameId() const;
+    const size_t& getStartFrameId() const;
+    const size_t& getTrackletLength() const;
+
+    size_t getNextId() const;
+    size_t getEndFrame() const;
+
+    void activate(const int& frame_id);
+    void reActivate(STrack &new_track, int frame_id, bool new_id = false);
+
+    void predict();
+    void update(STrack &new_track, int frame_id);
 
     void markAsLost();
     void markAsRemoved();
-    int getNextId();
-    int getEndFrame();
-    
-    void activate(KalmanFilter &kalman_filter, int frame_id);
-    void reActivate(STrack &new_track, int frame_id, bool new_id = false);
-    void update(STrack &new_track, int frame_id);
-
-public:
-    bool is_activated;
-    int track_id;
-    int state;
-
-    Rect<float> rect;
- 
-    int frame_id;
-    int tracklet_len;
-    int start_frame;
-
-    KalmanFilter::StateMean mean;
-    KalmanFilter::StateCov covariance;
-    float score;
 
 private:
     KalmanFilter kalman_filter_;
+    KalmanFilter::StateMean mean_;
+    KalmanFilter::StateCov covariance_;
+
+    Rect<float> rect_;
+    STrackState state_;
+
+    bool is_activated_;
+    float score_;
+    size_t track_id_;
+    size_t frame_id_;
+    size_t start_frame_id_;
+    size_t tracklet_len_;
+
+    void updateRect();
 };
 }
