@@ -4,9 +4,8 @@ C++ implementation of ByteTrack without object detection algorithm.
 
 ## Overview
 
-- The implementation is based on [ByteTrack-CPP-ncnn](https://github.com/ifzhang/ByteTrack/tree/3434c5e8bc6a5ae8ad530528ba8d9a431967f237/deploy/ncnn/cpp)
-  - This is the official C++ implementation using ncnn
-- Only tracking classes are implemented in this repository
+- The implementation is based on [ByteTrack-CPP-ncnn](https://github.com/ifzhang/ByteTrack/tree/3434c5e8bc6a5ae8ad530528ba8d9a431967f237/deploy/ncnn/cpp) that is the official C++ implementation using ncnn
+- Only tracking algorithm are implemented in this repository
   - Any object detection algorithm can be easily combined
 - Provided as a shared library usable in C++17 or higher
 - The output of the implementation has been verified to be equivalent to the output of the [ByteTrack-CPP-ncnn](https://github.com/ifzhang/ByteTrack/tree/3434c5e8bc6a5ae8ad530528ba8d9a431967f237/deploy/ncnn/cpp)
@@ -17,7 +16,7 @@ C++ implementation of ByteTrack without object detection algorithm.
 - Eigen 3.3
 - C++ compiler with C++17 or higher support
 - CMake 3.14 or higher
-- GoogleTest 1.10 or higher
+- GoogleTest 1.10 or higher (Only tests)
 
 ## Build and Test
 
@@ -40,12 +39,13 @@ ctest --verbose
 
 ## Tips
 
-You can use Docker to build and test the implementation.
+You can use docker container to build and test the implementation.
 
 ```shell
 docker build . -t bytetrack-cpp:latest
 docker run -ti --rm \
            -v ${PWD}:/usr/src/app \
+           -w /usr/src/app
            bytetrack-cpp:latest
 ```
 
