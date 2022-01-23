@@ -657,9 +657,3 @@ double byte_track::BYTETracker::execLapjv(const std::vector<std::vector<float> >
 
     return opt;
 }
-
-cv::Scalar byte_track::BYTETracker::getColor(int idx)
-{
-    idx += 3;
-    return cv::Scalar(37 * idx % 255, 17 * idx % 255, 29 * idx % 255);
-}

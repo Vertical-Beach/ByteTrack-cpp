@@ -17,7 +17,6 @@ public:
     ~BYTETracker();
 
     std::vector<STrack> update(const std::vector<Object>& objects);
-    cv::Scalar getColor(int idx);
 
 private:
     std::vector<STrack*> jointStracks(std::vector<STrack*> &tlista, std::vector<STrack> &tlistb);
