@@ -50,11 +50,11 @@ namespace
             decltype(inputs_ref)::iterator itr = inputs_ref.find(frame_id);
             if (itr != inputs_ref.end())
             {
-                itr->second.emplace_back(cv::Rect2f(x, y, width, height), 0, prob);
+                itr->second.emplace_back(byte_track::Rect(x, y, width, height), 0, prob);
             }
             else
             {
-                std::vector<byte_track::Object> v(1, {cv::Rect2f(x, y, width, height), 0, prob});
+                std::vector<byte_track::Object> v(1, {byte_track::Rect(x, y, width, height), 0, prob});
                 inputs_ref.emplace_hint(inputs_ref.end(), frame_id, v);
             }
         }

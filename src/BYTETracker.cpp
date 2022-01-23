@@ -44,15 +44,8 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     {
         for (size_t i = 0; i < objects.size(); i++)
         {
-            Tlbr<float> tlbr_;
-            tlbr_[0] = objects[i].rect.x;
-            tlbr_[1] = objects[i].rect.y;
-            tlbr_[2] = objects[i].rect.x + objects[i].rect.width;
-            tlbr_[3] = objects[i].rect.y + objects[i].rect.height;
-
-            float score = objects[i].prob;
-
-            STrack strack(generate_rect_by_tlbr(tlbr_), score);
+            const auto &score = objects[i].prob;
+            STrack strack(objects[i].rect, score);
             if (score >= track_thresh_)
             {
                 detections.push_back(strack);
@@ -61,7 +54,6 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
             {
                 detections_low.push_back(strack);
             }
-            
         }
     }
 

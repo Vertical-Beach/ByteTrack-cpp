@@ -1,16 +1,16 @@
 #pragma once
 
-#include <opencv2/opencv.hpp>
+#include <ByteTrack/Rect.h>
 
 namespace byte_track
 {
 struct Object
 {
-    cv::Rect2f rect;
+    Rect<float> rect;
     int label;
     float prob;
 
-    Object(const cv::Rect2f &_rect,
+    Object(const Rect<float> &_rect,
            const int &_label,
            const float &_prob);
 };
