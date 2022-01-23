@@ -1,13 +1,16 @@
 #include <ByteTrack/BYTETracker.h>
 
-byte_track::BYTETracker::BYTETracker(int frame_rate, int track_buffer)
+byte_track::BYTETracker::BYTETracker(const int& frame_rate,
+                                     const int& track_buffer,
+                                     const float& track_thresh,
+                                     const float& high_thresh,
+                                     const float& match_thresh) :
+    track_thresh_(track_thresh),
+    high_thresh_(high_thresh),
+    match_thresh_(match_thresh),
+    max_time_lost_(static_cast<int>(frame_rate / 30.0 * track_buffer)),
+    frame_id_(0)
 {
-    track_thresh_ = 0.5;
-    high_thresh_ = 0.6;
-    match_thresh_ = 0.8;
-
-    frame_id_ = 0;
-    max_time_lost_ = int(frame_rate / 30.0 * track_buffer);
 }
 
 byte_track::BYTETracker::~BYTETracker()

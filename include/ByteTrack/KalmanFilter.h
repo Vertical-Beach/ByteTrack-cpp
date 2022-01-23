@@ -10,7 +10,8 @@ class KalmanFilter
 {
 public:
     static const double chi2inv95[10];
-    KalmanFilter();
+    KalmanFilter(const float& std_weight_position = 1. / 20,
+                 const float& std_weight_velocity = 1. / 160);
     KAL_DATA initiate(const DETECTBOX& measurement);
     void predict(KAL_MEAN& mean, KAL_COVA& covariance);
     KAL_HDATA project(const KAL_MEAN& mean, const KAL_COVA& covariance);

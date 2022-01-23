@@ -10,7 +10,7 @@ enum TrackState { New = 0, Tracked, Lost, Removed };
 class STrack
 {
 public:
-    STrack(Rect<float> _rect, float score);
+    STrack(const Rect<float>& _rect, const float& _score);
     ~STrack();
 
     void static multi_predict(std::vector<STrack*> &stracks, KalmanFilter &kalman_filter);

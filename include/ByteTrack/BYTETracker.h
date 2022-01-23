@@ -9,7 +9,11 @@ namespace byte_track
 class BYTETracker
 {
 public:
-    BYTETracker(int frame_rate = 30, int track_buffer = 30);
+    BYTETracker(const int& frame_rate = 30,
+                const int& track_buffer = 30,
+                const float& track_thresh = 0.5,
+                const float& high_thresh = 0.6,
+                const float& match_thresh = 0.8);
     ~BYTETracker();
 
     std::vector<STrack> update(const std::vector<Object>& objects);
@@ -32,11 +36,12 @@ private:
         bool extend_cost = false, float cost_limit = LONG_MAX, bool return_cost = true);
 
 private:
-    float track_thresh_;
-    float high_thresh_;
-    float match_thresh_;
+    const float track_thresh_;
+    const float high_thresh_;
+    const float match_thresh_;
+    const int max_time_lost_;
+
     int frame_id_;
-    int max_time_lost_;
 
     std::vector<STrack> tracked_stracks_;
     std::vector<STrack> lost_stracks_;

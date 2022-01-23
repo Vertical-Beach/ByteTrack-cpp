@@ -12,20 +12,19 @@ const double byte_track::KalmanFilter::chi2inv95[10] = {
     15.507,
     16.919};
 
-byte_track::KalmanFilter::KalmanFilter()
+byte_track::KalmanFilter::KalmanFilter(const float& std_weight_position,
+                                       const float& std_weight_velocity) :
+    motion_mat_(Eigen::MatrixXf::Identity(8, 8)),
+    update_mat_(Eigen::MatrixXf::Identity(4, 8)),
+    std_weight_position_(std_weight_position),
+    std_weight_velocity_(std_weight_velocity)
 {
-    int ndim = 4;
-    double dt = 1.;
-
-    motion_mat_ = Eigen::MatrixXf::Identity(8, 8);
-    for (int i = 0; i < ndim; i++)
+    constexpr size_t ndim = 4;
+    constexpr double dt = 1.;
+    for (size_t i = 0; i < ndim; i++)
     {
         motion_mat_(i, ndim + i) = dt;
     }
-    update_mat_ = Eigen::MatrixXf::Identity(4, 8);
-
-    this->std_weight_position_ = 1. / 20;
-    this->std_weight_velocity_ = 1. / 160;
 }
 
 byte_track::KAL_DATA byte_track::KalmanFilter::initiate(const DETECTBOX &measurement)

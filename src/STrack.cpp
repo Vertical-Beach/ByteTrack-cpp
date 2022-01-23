@@ -1,17 +1,18 @@
 #include <ByteTrack/STrack.h>
 
-byte_track::STrack::STrack(Rect<float> _rect, float score)
+byte_track::STrack::STrack(const Rect<float>& _rect, const float& _score) :
+    is_activated(false),
+    track_id(0),
+    state(TrackState::New),
+    rect(_rect),
+    frame_id(0),
+    tracklet_len(0),
+    start_frame(0),
+    mean(),
+    covariance(),
+    score(_score),
+    kalman_filter_()
 {
-    is_activated = false;
-    track_id = 0;
-    state = TrackState::New;
-
-    rect = _rect;
-
-    frame_id = 0;
-    tracklet_len = 0;
-    this->score = score;
-    start_frame = 0;
 }
 
 byte_track::STrack::~STrack()
