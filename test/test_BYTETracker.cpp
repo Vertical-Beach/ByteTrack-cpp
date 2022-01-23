@@ -128,7 +128,8 @@ TEST(ByteTrack, BYTETracker)
             const auto outputs = tracker.update(objects_inputs_ref);
 
             // Verify between the reference data and the output of the BYTETracker impl
-            for (const auto outputs_per_frame : outputs)
+            EXPECT_EQ(outputs.size(), outputs_ref[frame_id_inputs_ref].size());
+            for (const auto &outputs_per_frame : outputs)
             {
                 const auto &ref = outputs_ref[frame_id_inputs_ref][outputs_per_frame.track_id];
                 EXPECT_NEAR(ref.x, outputs_per_frame.rect.x(), EPS);
