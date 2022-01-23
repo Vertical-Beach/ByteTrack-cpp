@@ -30,11 +30,11 @@ public:
 
     size_t getNextId() const;
 
-    void activate(const int& frame_id);
-    void reActivate(STrack &new_track, int frame_id, bool new_id = false);
+    void activate(const size_t& frame_id);
+    void reActivate(const STrack &new_track, const size_t &frame_id, const bool &new_id = false);
 
     void predict();
-    void update(STrack &new_track, int frame_id);
+    void update(const STrack &new_track, const size_t &frame_id);
 
     void markAsLost();
     void markAsRemoved();

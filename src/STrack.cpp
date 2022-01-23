@@ -65,7 +65,7 @@ size_t byte_track::STrack::getNextId() const
     return _count;
 }
 
-void byte_track::STrack::activate(const int& frame_id)
+void byte_track::STrack::activate(const size_t& frame_id)
 {
     const auto mc = kalman_filter_.initiate(rect_.getXyah());
     mean_ = mc.first;
@@ -84,7 +84,7 @@ void byte_track::STrack::activate(const int& frame_id)
     tracklet_len_ = 0;
 }
 
-void byte_track::STrack::reActivate(STrack &new_track, int frame_id, bool new_id)
+void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame_id, const bool &new_id)
 {
     const auto mc = kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
     mean_ = mc.first;
@@ -112,7 +112,7 @@ void byte_track::STrack::predict()
     kalman_filter_.predict(mean_, covariance_);
 }
 
-void byte_track::STrack::update(STrack &new_track, int frame_id)
+void byte_track::STrack::update(const STrack &new_track, const size_t &frame_id)
 {
     const auto mc = kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
     mean_ = mc.first;
