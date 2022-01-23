@@ -41,5 +41,3 @@ RUN mkdir -p /tmp/eigen && cd /tmp/eigen && \
     cmake .. && \
     make install && \
     cd /tmp && rm -rf eigen
-
-WORKDIR /usr/src/app
