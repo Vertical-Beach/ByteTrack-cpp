@@ -1,17 +1,17 @@
 #pragma once
 
-#include <array>
+#include <Eigen/Dense>
 
 namespace byte_track
 {
 template<typename T>
-using Tlwh = std::array<T, 4>;
+using Tlwh = Eigen::Matrix<T, 1, 4, Eigen::RowMajor>;
 
 template<typename T>
-using Tlbr = std::array<T, 4>;
+using Tlbr = Eigen::Matrix<T, 1, 4, Eigen::RowMajor>;
 
 template<typename T>
-using Xyah = std::array<T, 4>;
+using Xyah = Eigen::Matrix<T, 1, 4, Eigen::RowMajor>;
 
 template<typename T>
 class Rect
