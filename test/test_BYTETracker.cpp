@@ -2,8 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <opencv2/opencv.hpp>
-
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/json_parser.hpp>
 #include <boost/foreach.hpp>
@@ -17,7 +15,7 @@ namespace
     const std::string T_RESULTS_FILE = "tracking_results.json";
 
     // key: track_id, value: rect of tracking object
-    using BYTETrackerOut = std::map<size_t, cv::Rect2f>;
+    using BYTETrackerOut = std::map<size_t, byte_track::Rect<float>>;
 
     template <typename T>
     T get_data(const boost::property_tree::ptree &pt, const std::string &key)
@@ -77,12 +75,12 @@ namespace
             decltype(outputs_ref)::iterator itr = outputs_ref.find(frame_id);
             if (itr != outputs_ref.end())
             {
-                itr->second.emplace(track_id, cv::Rect2f(x, y, width, height));
+                itr->second.emplace(track_id, byte_track::Rect<float>(x, y, width, height));
             }
             else
             {
                 BYTETrackerOut v{
-                    {track_id, cv::Rect2f(x, y, width, height)},
+                    {track_id, byte_track::Rect<float>(x, y, width, height)},
                 };
                 outputs_ref.emplace_hint(outputs_ref.end(), frame_id, v);
             }
@@ -132,10 +130,10 @@ TEST(ByteTrack, BYTETracker)
                 const auto &rect = outputs_per_frame.getRect();
                 const auto &track_id = outputs_per_frame.getTrackId();
                 const auto &ref = outputs_ref[frame_id][track_id];
-                EXPECT_NEAR(ref.x, rect.x(), EPS);
-                EXPECT_NEAR(ref.y, rect.y(), EPS);
-                EXPECT_NEAR(ref.width, rect.width(), EPS);
-                EXPECT_NEAR(ref.height, rect.height(), EPS);
+                EXPECT_NEAR(ref.x(), rect.x(), EPS);
+                EXPECT_NEAR(ref.y(), rect.y(), EPS);
+                EXPECT_NEAR(ref.width(), rect.width(), EPS);
+                EXPECT_NEAR(ref.height(), rect.height(), EPS);
             }
         }
     }

@@ -14,7 +14,6 @@ C++ implementation of ByteTrack without object detection algorithm.
 
 ## Dependencies
 
-- OpenCV 3.4
 - Eigen 3.3
 - C++ compiler with C++17 or higher support
 - CMake 3.14 or higher

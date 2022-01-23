@@ -26,15 +26,9 @@ if(NOT EIGEN3_FOUND)
   message(FATAL_ERROR "Eigen > 3.3.0 not found.")
 endif()
 
-find_package(OpenCV 3.4.0 QUIET)
-if(NOT OpenCV_FOUND)
-  message(FATAL_ERROR "OpenCV > 3.4.0 not found.")
-endif()
-
 include_directories(
   ${PROJECT_SOURCE_DIR}/include
   ${EIGEN3_INCLUDE_DIR}
-  ${OpenCV_INCLUDE_DIR}
   )
 
 add_library(${PROJECT_NAME} SHARED
@@ -48,7 +42,6 @@ add_library(${PROJECT_NAME} SHARED
 
 target_link_libraries(${PROJECT_NAME}
   ${EIGEN3_LIBS}
-  ${OpenCV_LIBS}
   )
 
 # Build the tests if the 'BUILD_BYTETRACK_TEST' variable is set to 'ON'
