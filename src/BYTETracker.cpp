@@ -9,7 +9,8 @@ byte_track::BYTETracker::BYTETracker(const int& frame_rate,
     high_thresh_(high_thresh),
     match_thresh_(match_thresh),
     max_time_lost_(static_cast<int>(frame_rate / 30.0 * track_buffer)),
-    frame_id_(0)
+    frame_id_(0),
+    track_id_count_(0)
 {
 }
 
@@ -99,7 +100,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
         }
         else
         {
-            track->reActivate(*det, frame_id_, false);
+            track->reActivate(*det, frame_id_);
             refind_stracks.push_back(*track);
         }
     }
@@ -139,7 +140,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
         }
         else
         {
-            track->reActivate(*det, frame_id_, false);
+            track->reActivate(*det, frame_id_);
             refind_stracks.push_back(*track);
         }
     }
@@ -185,7 +186,8 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
         STrack *track = &detections[u_detection[i]];
         if (track->getScore() < high_thresh_)
             continue;
-        track->activate(frame_id_);
+        track_id_count_++;
+        track->activate(frame_id_, track_id_count_);
         activated_stracks.push_back(*track);
     }
 

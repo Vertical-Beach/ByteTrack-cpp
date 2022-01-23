@@ -58,14 +58,7 @@ const size_t& byte_track::STrack::getTrackletLength() const
     return tracklet_len_;
 }
 
-size_t byte_track::STrack::getNextId() const
-{
-    static size_t _count = 0;
-    _count++;
-    return _count;
-}
-
-void byte_track::STrack::activate(const size_t& frame_id)
+void byte_track::STrack::activate(const size_t& frame_id, const size_t& track_id)
 {
     const auto mc = kalman_filter_.initiate(rect_.getXyah());
     mean_ = mc.first;
@@ -78,13 +71,13 @@ void byte_track::STrack::activate(const size_t& frame_id)
     {
         is_activated_ = true;
     }
-    track_id_ = getNextId();
+    track_id_ = track_id;
     frame_id_ = frame_id;
     start_frame_id_ = frame_id;
     tracklet_len_ = 0;
 }
 
-void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame_id, const bool &new_id)
+void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame_id, const int &new_track_id)
 {
     const auto mc = kalman_filter_.update(mean_, covariance_, new_track.getRect().getXyah());
     mean_ = mc.first;
@@ -95,9 +88,9 @@ void byte_track::STrack::reActivate(const STrack &new_track, const size_t &frame
     state_ = STrackState::Tracked;
     is_activated_ = true;
     score_ = new_track.getScore();
-    if (new_id)
+    if (0 <= new_track_id)
     {
-        track_id_ = getNextId();
+        track_id_ = new_track_id;
     }
     frame_id_ = frame_id;
     tracklet_len_ = 0;

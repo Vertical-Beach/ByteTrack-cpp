@@ -28,10 +28,8 @@ public:
     const size_t& getStartFrameId() const;
     const size_t& getTrackletLength() const;
 
-    size_t getNextId() const;
-
-    void activate(const size_t& frame_id);
-    void reActivate(const STrack &new_track, const size_t &frame_id, const bool &new_id = false);
+    void activate(const size_t& frame_id, const size_t& track_id);
+    void reActivate(const STrack &new_track, const size_t &frame_id, const int &new_track_id = -1);
 
     void predict();
     void update(const STrack &new_track, const size_t &frame_id);

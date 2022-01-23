@@ -42,6 +42,7 @@ private:
     const int max_time_lost_;
 
     int frame_id_;
+    size_t track_id_count_;
 
     std::vector<STrack> tracked_stracks_;
     std::vector<STrack> lost_stracks_;
