@@ -127,8 +127,8 @@ TEST(ByteTrack, BYTETracker)
             EXPECT_EQ(outputs.size(), outputs_ref[frame_id].size());
             for (const auto &outputs_per_frame : outputs)
             {
-                const auto &rect = outputs_per_frame.getRect();
-                const auto &track_id = outputs_per_frame.getTrackId();
+                const auto &rect = outputs_per_frame->getRect();
+                const auto &track_id = outputs_per_frame->getTrackId();
                 const auto &ref = outputs_ref[frame_id][track_id];
                 EXPECT_NEAR(ref.x(), rect.x(), EPS);
                 EXPECT_NEAR(ref.y(), rect.y(), EPS);
