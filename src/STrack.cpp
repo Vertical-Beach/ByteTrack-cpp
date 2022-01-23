@@ -65,12 +65,6 @@ size_t byte_track::STrack::getNextId() const
     return _count;
 }
 
-size_t byte_track::STrack::getEndFrame() const
-{
-    return frame_id_;
-}
-
-
 void byte_track::STrack::activate(const int& frame_id)
 {
     const auto mc = kalman_filter_.initiate(rect_.getXyah());

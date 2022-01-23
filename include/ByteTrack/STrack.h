@@ -29,7 +29,6 @@ public:
     const size_t& getTrackletLength() const;
 
     size_t getNextId() const;
-    size_t getEndFrame() const;
 
     void activate(const int& frame_id);
     void reActivate(STrack &new_track, int frame_id, bool new_id = false);

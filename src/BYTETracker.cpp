@@ -192,7 +192,7 @@ std::vector<byte_track::STrack> byte_track::BYTETracker::update(const std::vecto
     ////////////////// Step 5: Update state //////////////////
     for (size_t i = 0; i < lost_stracks_.size(); i++)
     {
-        if (frame_id_ - lost_stracks_[i].getEndFrame() > max_time_lost_)
+        if (frame_id_ - lost_stracks_[i].getFrameId() > max_time_lost_)
         {
             lost_stracks_[i].markAsRemoved();
             removed_stracks.push_back(lost_stracks_[i]);
