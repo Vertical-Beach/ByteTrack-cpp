@@ -45,7 +45,7 @@ You can use docker container to build and test the implementation.
 docker build . -t bytetrack-cpp:latest
 docker run -ti --rm \
            -v ${PWD}:/usr/src/app \
-           -w /usr/src/app
+           -w /usr/src/app \
            bytetrack-cpp:latest
 ```
 
