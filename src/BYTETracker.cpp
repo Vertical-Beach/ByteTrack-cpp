@@ -287,7 +287,7 @@ void byte_track::BYTETracker::removeDuplicateStracks(const std::vector<STrackPtr
     }
 
     std::vector<bool> a_overlapping(a_stracks.size(), false), b_overlapping(b_stracks.size(), false);
-    for (const auto &[b_idx, a_idx] : overlapping_combinations)
+    for (const auto &[a_idx, b_idx] : overlapping_combinations)
     {
         const int timep = a_stracks[a_idx]->getFrameId() - a_stracks[a_idx]->getStartFrameId();
         const int timeq = b_stracks[b_idx]->getFrameId() - b_stracks[b_idx]->getStartFrameId();
