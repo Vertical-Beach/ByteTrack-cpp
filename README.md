@@ -1,6 +1,6 @@
 # ByteTrack-cpp
 
-C++ implementation of ByteTrack without object detection algorithm.
+C++ implementation of ByteTrack that does not include an object detection algorithm.
 
 ## Overview
 
