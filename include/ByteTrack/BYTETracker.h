@@ -5,6 +5,7 @@
 #include "ByteTrack/Object.h"
 
 #include <cstddef>
+#include <limits>
 #include <map>
 #include <memory>
 #include <vector>
