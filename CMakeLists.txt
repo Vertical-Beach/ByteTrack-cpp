@@ -26,20 +26,18 @@ if(NOT EIGEN3_FOUND)
   message(FATAL_ERROR "Eigen > 3.3.0 not found.")
 endif()
 
-include_directories(
-  ${PROJECT_SOURCE_DIR}/include
+add_library(${PROJECT_NAME} SHARED
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/BYTETracker.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/KalmanFilter.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/lapjv.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/Object.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/Rect.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/STrack.cpp
+  )
+target_include_directories(${PROJECT_NAME} PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${EIGEN3_INCLUDE_DIR}
   )
-
-add_library(${PROJECT_NAME} SHARED
-  ${PROJECT_SOURCE_DIR}/src/BYTETracker.cpp
-  ${PROJECT_SOURCE_DIR}/src/KalmanFilter.cpp
-  ${PROJECT_SOURCE_DIR}/src/lapjv.cpp
-  ${PROJECT_SOURCE_DIR}/src/Object.cpp
-  ${PROJECT_SOURCE_DIR}/src/Rect.cpp
-  ${PROJECT_SOURCE_DIR}/src/STrack.cpp
-  )
-
 target_link_libraries(${PROJECT_NAME}
   ${EIGEN3_LIBS}
   )
@@ -55,7 +53,7 @@ if(BUILD_BYTETRACK_TEST)
   endif()
 
   add_executable(${PROJECT_NAME}_test
-    ${PROJECT_SOURCE_DIR}/test/test_BYTETracker.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/test_BYTETracker.cpp
   )
 
   target_link_libraries(${PROJECT_NAME}_test
