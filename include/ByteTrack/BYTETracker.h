@@ -55,7 +55,7 @@ private:
                      std::vector<int> &rowsol,
                      std::vector<int> &colsol,
                      bool extend_cost = false,
-                     float cost_limit = LONG_MAX,
+                     float cost_limit = std::numeric_limits<float>::max(),
                      bool return_cost = true) const;
 
 private:

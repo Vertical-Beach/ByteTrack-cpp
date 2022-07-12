@@ -457,14 +457,14 @@ double byte_track::BYTETracker::execLapjv(const std::vector<std::vector<float>> 
         }
     }
 
-    if (extend_cost || cost_limit < LONG_MAX)
+    if (extend_cost || cost_limit < std::numeric_limits<float>::max())
     {
         n = n_rows + n_cols;
         cost_c_extended.resize(n);
         for (size_t i = 0; i < cost_c_extended.size(); i++)
             cost_c_extended[i].resize(n);
 
-        if (cost_limit < LONG_MAX)
+        if (cost_limit < std::numeric_limits<float>::max())
         {
             for (size_t i = 0; i < cost_c_extended.size(); i++)
             {
