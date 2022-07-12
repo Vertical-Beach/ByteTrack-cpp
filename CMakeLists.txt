@@ -21,17 +21,18 @@ else()
   message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler.")
 endif()
 
-find_package(Eigen3 3.3.0 QUIET)
+set(EIGEN_VERSION 3.3)
+find_package(Eigen3 ${EIGEN_VERSION} QUIET)
 if(NOT EIGEN3_FOUND)
   set(BUILD_TESTING OFF CACHE INTERNAL "")
   FetchContent_Declare(eigen
     GIT_REPOSITORY  https://gitlab.com/libeigen/eigen.git
-    GIT_TAG         3.3
+    GIT_TAG         ${EIGEN_VERSION}
     GIT_SHALLOW     ON)
   FetchContent_MakeAvailable(eigen)
   unset(BUILD_TESTING CACHE)
   FetchContent_GetProperties(eigen BINARY_DIR Eigen3_DIR)
-  find_package(Eigen3 3.3.0 REQUIRED)
+  find_package(Eigen3 ${EIGEN_VERSION} REQUIRED)
 endif()
 
 add_library(${PROJECT_NAME} SHARED
