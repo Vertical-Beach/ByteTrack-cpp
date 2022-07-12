@@ -1,4 +1,6 @@
-#include <ByteTrack/Rect.h>
+#include "ByteTrack/Rect.h"
+
+#include <algorithm>
 
 template <typename T>
 byte_track::Rect<T>::Rect(const T &x, const T &y, const T &width, const T &height) :

@@ -1,4 +1,6 @@
-#include <ByteTrack/lapjv.h>
+#include "ByteTrack/lapjv.h"
+
+#include <stdexcept>
 
 #define LAPJV_CPP_NEW(x, t, n) if ((x = (t *)malloc(sizeof(t) * (n))) == 0) { return -1; }
 #define LAPJV_CPP_FREE(x) if (x != 0) { free(x); x = 0; }

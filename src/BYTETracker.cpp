@@ -1,4 +1,10 @@
-#include <ByteTrack/BYTETracker.h>
+#include "ByteTrack/BYTETracker.h"
+
+#include <map>
+#include <memory>
+#include <stdexcept>
+#include <utility>
+#include <vector>
 
 byte_track::BYTETracker::BYTETracker(const int& frame_rate,
                                      const int& track_buffer,

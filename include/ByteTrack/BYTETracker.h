@@ -1,11 +1,12 @@
 #pragma once
 
+#include "ByteTrack/STrack.h"
+#include "ByteTrack/lapjv.h"
+#include "ByteTrack/Object.h"
+
 #include <map>
 #include <memory>
-
-#include <ByteTrack/STrack.h>
-#include <ByteTrack/lapjv.h>
-#include <ByteTrack/Object.h>
+#include <vector>
 
 namespace byte_track
 {
