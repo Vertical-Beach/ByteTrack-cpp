@@ -36,11 +36,8 @@ add_library(${PROJECT_NAME} SHARED
   )
 target_include_directories(${PROJECT_NAME} PUBLIC
   ${CMAKE_CURRENT_SOURCE_DIR}/include
-  ${EIGEN3_INCLUDE_DIR}
   )
-target_link_libraries(${PROJECT_NAME}
-  ${EIGEN3_LIBS}
-  )
+target_link_libraries(${PROJECT_NAME} Eigen3::Eigen)
 
 # Build the tests if the 'BUILD_BYTETRACK_TEST' variable is set to 'ON'
 set(BUILD_BYTETRACK_TEST OFF CACHE BOOL "The flag whether to build the tests or not")
