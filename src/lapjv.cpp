@@ -1,6 +1,7 @@
 #include "ByteTrack/lapjv.h"
 
 #include <cstddef>
+#include <cstring>
 #include <stdexcept>
 
 #define LAPJV_CPP_NEW(x, t, n) if ((x = (t *)malloc(sizeof(t) * (n))) == 0) { return -1; }
