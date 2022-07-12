@@ -1,5 +1,6 @@
 #include "ByteTrack/BYTETracker.h"
 
+#include <cstddef>
 #include <map>
 #include <memory>
 #include <stdexcept>

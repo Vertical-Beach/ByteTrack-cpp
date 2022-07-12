@@ -4,6 +4,7 @@
 #include "ByteTrack/lapjv.h"
 #include "ByteTrack/Object.h"
 
+#include <cstddef>
 #include <map>
 #include <memory>
 #include <vector>

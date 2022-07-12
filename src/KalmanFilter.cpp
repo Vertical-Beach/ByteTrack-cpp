@@ -1,5 +1,7 @@
 #include "ByteTrack/KalmanFilter.h"
 
+#include <cstddef>
+
 byte_track::KalmanFilter::KalmanFilter(const float& std_weight_position,
                                        const float& std_weight_velocity) :
     std_weight_position_(std_weight_position),

@@ -1,5 +1,7 @@
 #include "ByteTrack/STrack.h"
 
+#include <cstddef>
+
 byte_track::STrack::STrack(const Rect<float>& rect, const float& score) :
     kalman_filter_(),
     mean_(),
