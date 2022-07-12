@@ -31,8 +31,6 @@ if(NOT EIGEN3_FOUND)
     GIT_SHALLOW     ON)
   FetchContent_MakeAvailable(eigen)
   unset(BUILD_TESTING CACHE)
-  FetchContent_GetProperties(eigen BINARY_DIR Eigen3_DIR)
-  find_package(Eigen3 ${EIGEN_VERSION} REQUIRED)
 endif()
 
 add_library(${PROJECT_NAME} SHARED
