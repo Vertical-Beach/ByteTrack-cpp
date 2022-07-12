@@ -23,7 +23,15 @@ endif()
 
 find_package(Eigen3 3.3.0 QUIET)
 if(NOT EIGEN3_FOUND)
-  message(FATAL_ERROR "Eigen > 3.3.0 not found.")
+  set(BUILD_TESTING OFF CACHE INTERNAL "")
+  FetchContent_Declare(eigen
+    GIT_REPOSITORY  https://gitlab.com/libeigen/eigen.git
+    GIT_TAG         3.3
+    GIT_SHALLOW     ON)
+  FetchContent_MakeAvailable(eigen)
+  unset(BUILD_TESTING CACHE)
+  FetchContent_GetProperties(eigen BINARY_DIR Eigen3_DIR)
+  find_package(Eigen3 3.3.0 REQUIRED)
 endif()
 
 add_library(${PROJECT_NAME} SHARED
