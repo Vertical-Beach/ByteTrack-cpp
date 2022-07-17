@@ -1,7 +1,9 @@
 #pragma once
 
-#include <ByteTrack/Rect.h>
-#include <ByteTrack/KalmanFilter.h>
+#include "ByteTrack/Rect.h"
+#include "ByteTrack/KalmanFilter.h"
+
+#include <cstddef>
 
 namespace byte_track
 {

@@ -1,10 +1,6 @@
 #pragma once
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-
-#include <iostream>
+#include <cstddef>
 
 namespace byte_track
 {

@@ -1,4 +1,6 @@
-#include <ByteTrack/STrack.h>
+#include "ByteTrack/STrack.h"
+
+#include <cstddef>
 
 byte_track::STrack::STrack(const Rect<float>& rect, const float& score) :
     kalman_filter_(),

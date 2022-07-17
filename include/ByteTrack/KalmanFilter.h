@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Eigen/Dense>
+#include "Eigen/Dense"
 
-#include <ByteTrack/Rect.h>
+#include "ByteTrack/Rect.h"
 
 namespace byte_track
 {

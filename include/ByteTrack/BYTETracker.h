@@ -1,11 +1,14 @@
 #pragma once
 
+#include "ByteTrack/STrack.h"
+#include "ByteTrack/lapjv.h"
+#include "ByteTrack/Object.h"
+
+#include <cstddef>
+#include <limits>
 #include <map>
 #include <memory>
-
-#include <ByteTrack/STrack.h>
-#include <ByteTrack/lapjv.h>
-#include <ByteTrack/Object.h>
+#include <vector>
 
 namespace byte_track
 {
@@ -53,7 +56,7 @@ private:
                      std::vector<int> &rowsol,
                      std::vector<int> &colsol,
                      bool extend_cost = false,
-                     float cost_limit = LONG_MAX,
+                     float cost_limit = std::numeric_limits<float>::max(),
                      bool return_cost = true) const;
 
 private:
