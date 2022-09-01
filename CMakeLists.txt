@@ -21,28 +21,30 @@ else()
   message(FATAL_ERROR "The compiler ${CMAKE_CXX_COMPILER} has no C++17 support. Please use a different C++ compiler.")
 endif()
 
-find_package(Eigen3 3.3.0 QUIET)
+set(EIGEN_VERSION 3.3)
+find_package(Eigen3 ${EIGEN_VERSION} QUIET)
 if(NOT EIGEN3_FOUND)
-  message(FATAL_ERROR "Eigen > 3.3.0 not found.")
+  set(BUILD_TESTING OFF CACHE INTERNAL "")
+  FetchContent_Declare(eigen
+    GIT_REPOSITORY  https://gitlab.com/libeigen/eigen.git
+    GIT_TAG         ${EIGEN_VERSION}
+    GIT_SHALLOW     ON)
+  FetchContent_MakeAvailable(eigen)
+  unset(BUILD_TESTING CACHE)
 endif()
 
-include_directories(
-  ${PROJECT_SOURCE_DIR}/include
-  ${EIGEN3_INCLUDE_DIR}
-  )
-
 add_library(${PROJECT_NAME} SHARED
-  ${PROJECT_SOURCE_DIR}/src/BYTETracker.cpp
-  ${PROJECT_SOURCE_DIR}/src/KalmanFilter.cpp
-  ${PROJECT_SOURCE_DIR}/src/lapjv.cpp
-  ${PROJECT_SOURCE_DIR}/src/Object.cpp
-  ${PROJECT_SOURCE_DIR}/src/Rect.cpp
-  ${PROJECT_SOURCE_DIR}/src/STrack.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/BYTETracker.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/KalmanFilter.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/lapjv.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/Object.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/Rect.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/STrack.cpp
   )
-
-target_link_libraries(${PROJECT_NAME}
-  ${EIGEN3_LIBS}
+target_include_directories(${PROJECT_NAME} PUBLIC
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
   )
+target_link_libraries(${PROJECT_NAME} Eigen3::Eigen)
 
 # Build the tests if the 'BUILD_BYTETRACK_TEST' variable is set to 'ON'
 set(BUILD_BYTETRACK_TEST OFF CACHE BOOL "The flag whether to build the tests or not")
@@ -55,7 +57,7 @@ if(BUILD_BYTETRACK_TEST)
   endif()
 
   add_executable(${PROJECT_NAME}_test
-    ${PROJECT_SOURCE_DIR}/test/test_BYTETracker.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/test/test_BYTETracker.cpp
   )
 
   target_link_libraries(${PROJECT_NAME}_test
